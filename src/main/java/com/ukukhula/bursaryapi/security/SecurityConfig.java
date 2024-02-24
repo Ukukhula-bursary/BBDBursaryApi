@@ -23,26 +23,16 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception {
 
-        // http.addFilterBefore(jwtAuthenticationFilter,
-        //         UsernamePasswordAuthenticationFilter.class);
-
-        // http
-        //         .cors(Customizer.withDefaults())
-        //         .csrf(AbstractHttpConfigurer::disable)
-        //         .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        //         .formLogin(AbstractHttpConfigurer::disable)
-        //         .securityMatcher("/**")
-        //         .authorizeHttpRequests(auth -> auth
-        //                 .anyRequest().permitAll());
-
         return http
-        .authorizeHttpRequests(outh -> {
-            outh.requestMatchers("/").permitAll();
-            outh.anyRequest().authenticated();
-
-        })
-        .oauth2Login(withDefaults())
-        .formLogin(withDefaults())
-        .build();
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .cors(Customizer.withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .formLogin(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                // Require authentication for all requests
+                .anyRequest().anonymous()
+            )
+            .build();
     }
 }
