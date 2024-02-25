@@ -17,15 +17,14 @@ public class  User {
     private String lastName;
     private int contactId;
     private int userRoleId;
-    private boolean isUserActive;
+    private int IsActiveID;
 
-    public User(String firstName, String lastName, int contactId/* ,
-                int userRoleId*/, boolean isUserActive) {
+    public User(String firstName, String lastName, int contactId , int IsActiveID) {
         // this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.contactId = contactId;
-        // this.userRoleId = userRoleId;
-        this.isUserActive = isUserActive;
+      
+        this.IsActiveID = IsActiveID;
     }
 }

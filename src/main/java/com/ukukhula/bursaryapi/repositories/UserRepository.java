@@ -1,11 +1,19 @@
 package com.ukukhula.bursaryapi.repositories;
 
 import com.ukukhula.bursaryapi.entities.User;
+import com.ukukhula.bursaryapi.entities.Request.UserRequest;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -42,8 +50,25 @@ public class UserRepository {
     }
 
     private final RowMapper<User> userRowMapper = ((resultSet, rowNumber) ->
-            new User(resultSet.getString("firstName"),
-                    resultSet.getString("lastName"),
-                    resultSet.getInt("ContactID")/* , resultSet.getInt("UserRoleID")
-                    */, resultSet.getBoolean("userActive")));
+            new User(resultSet.getString("FirstName"),
+                    resultSet.getString("LastName"),
+                    resultSet.getInt("ContactID"),
+                     resultSet.getInt("IsActiveID")));
+
+    public int add(UserRequest user) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+.withProcedureName("AddUser");
+// Map inParamMap = new HashMap();
+// inParamMap.put("FirstName", user.getFirstName());
+// inParamMap.put("LastName", user.getLastName());
+// inParamMap.put("PhoneNumber", user.getPhoneNumber());
+// inParamMap.put("Email", user.getLastName());
+
+// SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+// Map simpleJdbcCallResult = simpleJdbcCall.execute(in);
+// System.out.println(simpleJdbcCallResult);
+        String NEW_USER="{CALL AddUser(?,?,?,?,?)}";
+        int userRecord=jdbcTemplate.update(NEW_USER , user.getFirstName(),user.getLastName(),user.getPhoneNumber(),user.getEmail(),1);
+        return userRecord;
+    }
 }
