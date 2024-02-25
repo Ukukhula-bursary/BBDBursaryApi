@@ -3,12 +3,19 @@ package com.ukukhula.bursaryapi.controllers;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.ukukhula.bursaryapi.entities.LoginResponse;
 import com.ukukhula.bursaryapi.entities.User;
 import com.ukukhula.bursaryapi.security.JwtIssuer;
 
 import com.ukukhula.bursaryapi.services.UserRoleService;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +32,15 @@ import java.util.List;
 public class AuthenticationController {
 
     private final JwtIssuer jwtIssuer;
-    private final UserRoleService userRoleService;
 
-    public AuthenticationController(JwtIssuer jwtIssuer, UserRoleService userRoleService) {
+
+    public AuthenticationController(JwtIssuer jwtIssuer) {
         this.jwtIssuer = jwtIssuer;
-        this.userRoleService = userRoleService;
+      
     }
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody @Validated User userDetails) {
-//        System.out.println(userDetails);
 
         var token = jwtIssuer.issue(1, userDetails.getFirstName(),
                 List.of("USER"));
@@ -44,15 +50,31 @@ public class AuthenticationController {
   
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> oAuthlogin(@RequestBody String oauthToken) {
-        // Assuming you receive the OAuth token as part of the request body
-        System.out.println(oauthToken);
-        // Validate and process the OAuth token
-        // DecodedJWT decodedJWT = decodeOAuthToken(oauthToken);
-        // if (decodedJWT != null) {
-            // If token is valid, extract user email and issue a JWT token
-            // String userEmail = decodedJWT.getClaim("email").asString();
-            // var token = jwtIssuer.issue(1, userEmail, List.of("USER"));
-            LoginResponse response = LoginResponse.builder().accessToken(oauthToken).build();
+      
+        ObjectMapper mapper = new ObjectMapper();
+       System.out.println(oauthToken);
+      
+        JsonNode rootNode=null;
+        try {
+            rootNode = mapper.readTree(oauthToken);
+        } catch (JsonMappingException e) {
+          
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+         
+            e.printStackTrace();
+        }
+
+      
+        String emailAddress = rootNode.get("user").get("emailAddress").asText();
+        System.out.println(emailAddress);
+       
+    //    System.out.println(oauthToken.get("emailAddress"));
+    // {"user":{"kind":"drive#user","displayName":"Sir MAKHOBA",
+    // "photoLink":"https:\/\/lh3.googleusercontent.com\/a\/ACg8ocKp8TEuTc06c-cbuoZZTLy3v1uIkDCOZv9N9OBz6kRp=s64"
+    // ,"me":true,"permissionId":"16354109988529483724","emailAddress":"manyoba1997@gmail.com"}}
+    
+            LoginResponse response = LoginResponse.builder().accessToken(oauthToken.toString()).build();
             return ResponseEntity.ok(response);
         // }
         // Handle invalid token

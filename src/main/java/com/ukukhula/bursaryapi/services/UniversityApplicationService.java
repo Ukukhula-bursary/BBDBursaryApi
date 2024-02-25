@@ -1,7 +1,21 @@
 package com.ukukhula.bursaryapi.services;
 
 import com.ukukhula.bursaryapi.entities.UniversityApplication;
+import com.ukukhula.bursaryapi.repositories.UniversityApplicationRepository;
+import org.springframework.stereotype.Service;
 
-public interface UniversityApplicationService {
-    UniversityApplication getApplicationByUniversityId(int universityId);
+@Service
+public class UniversityApplicationService   {
+    final
+    UniversityApplicationRepository universityApplicationRepository;
+
+    public UniversityApplicationService(UniversityApplicationRepository universityApplicationRepository) {
+        this.universityApplicationRepository = universityApplicationRepository;
+    }
+
+
+ 
+    public UniversityApplication getApplicationByUniversityId(int universityId) {
+        return universityApplicationRepository.getApplicationByUniversityId(universityId);
+    }
 }

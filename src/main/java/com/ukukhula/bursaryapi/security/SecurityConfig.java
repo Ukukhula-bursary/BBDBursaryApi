@@ -11,12 +11,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
@@ -35,4 +38,12 @@ public class SecurityConfig {
             )
             .build();
     }
+     @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/auth/login") // Define the endpoint for which you want to allow CORS
+                .allowedOrigins("http://localhost:8080") // Allow requests from this origin
+                .allowedMethods("GET", "POST") // Allow only specified methods
+                .allowedHeaders("*"); // Allow all headers
+    }
+
 }
