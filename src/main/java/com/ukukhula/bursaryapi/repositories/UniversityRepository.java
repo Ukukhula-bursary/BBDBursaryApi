@@ -21,7 +21,7 @@ public class UniversityRepository {
           "uspAddUniversityByName(?)}";
   private static final String GET_UNIVERSITY_BY_ID = "{CALL " +
           "uspGetUniversityById(?)}";
-  private static final String GET_ALL_UNIVERSITIES = "SELECT ID, UniversityName FROM vUniversities";
+  private static final String GET_ALL_UNIVERSITIES = "SELECT  UniversityName, FROM Universities";
 
   
   private final JdbcTemplate jdbcTemplate;
@@ -74,6 +74,5 @@ public class UniversityRepository {
 
 
   private final RowMapper<University> universityRowMapper = ((resultSet,
-      rowNumber) -> new University(resultSet.getInt("ID"),
-          resultSet.getString("UniversityName")));
+      rowNumber) -> new University(resultSet.getString("UniversityName")));
 }

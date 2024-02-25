@@ -1,6 +1,7 @@
 package com.ukukhula.bursaryapi.services;
 
 import com.ukukhula.bursaryapi.entities.User;
+import com.ukukhula.bursaryapi.entities.Request.UserRequest;
 import com.ukukhula.bursaryapi.repositories.UserRepository;
 
 import java.util.List;
@@ -32,5 +33,9 @@ public class UserService {
     {
         return userRepository.findAll();
     }
+    public int save(UserRequest user)
+  {
     
+    return userRepository.add(user);
+  }  
 }

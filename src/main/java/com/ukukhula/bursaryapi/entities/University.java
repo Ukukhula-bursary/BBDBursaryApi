@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class University {
-  private int id;
+  // private int id;
   private String name;
 
-  public University(int id, String name) {
-    this.id = id;
+  public University(String name) {
+    // this.id = id;
     this.name = name;
   }
 }
