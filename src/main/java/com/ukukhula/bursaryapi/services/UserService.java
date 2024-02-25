@@ -35,7 +35,11 @@ public class UserService {
     }
     public int save(UserRequest user)
   {
-    
-    return userRepository.add(user);
+    return userRepository.addUser(user);
   }  
+
+  public int update(UserRequest user)
+  {
+    return userRepository.updateUser(user);
+  }
 }
