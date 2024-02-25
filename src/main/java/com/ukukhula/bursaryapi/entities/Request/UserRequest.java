@@ -31,7 +31,8 @@ public class  UserRequest {
         this.lastName = lastName;
         this.Email=email;
         this.PhoneNumber=phoneNumber;
-        this.IsActiveID = IsActiveID;
+        this.IsActiveID = 1;
     }
+
 }
 
