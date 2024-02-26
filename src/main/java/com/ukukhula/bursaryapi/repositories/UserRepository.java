@@ -47,8 +47,6 @@ public class UserRepository {
         return count != null && count > 0;
     }
 
-   
-
     private final RowMapper<User> userRowMapper = ((resultSet, rowNumber) -> new User(resultSet.getString("FirstName"),
             resultSet.getString("LastName"),
             resultSet.getInt("ContactID"),
@@ -95,6 +93,23 @@ public class UserRepository {
 
             System.err.println("Error updating user: " + e.getMessage());
             return -1;
+        }
+    }
+
+    public boolean UpdateRole(String email,int RoleID) {
+        String query = "INSERT INTO UserRole(UserID, RoleID)" +
+                "SELECT u.UserID, ? AS RoleID" +
+                "FROM Users u" +
+                "INNER JOIN Contacts c ON u.ContactID = c.ContactID"+
+                "WHERE c.Email = ?";
+        try {
+
+            int rowsAffected = jdbcTemplate.update(query,RoleID, email);
+
+            return rowsAffected > 0;
+        } catch (Exception e) {
+
+            return false;
         }
     }
 }

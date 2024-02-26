@@ -19,19 +19,20 @@ public class  UserRequest {
     private String firstName;
     private String lastName;
   
-    // private int userRoleId;
+    private int userRoleId;
     // private int contactId;
     private String PhoneNumber;
     private String Email;
     private int IsActiveID;
 
-    public UserRequest(String firstName, String lastName,String phoneNumber ,String email , int IsActiveID) {
+    public UserRequest(String firstName, String lastName,String phoneNumber ,String email , int IsActiveID,int userRoleId) {
         // this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.Email=email;
         this.PhoneNumber=phoneNumber;
         this.IsActiveID = 1;
+        this.userRoleId=userRoleId;
     }
 
 }

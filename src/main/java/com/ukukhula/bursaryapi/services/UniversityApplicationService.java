@@ -18,4 +18,9 @@ public class UniversityApplicationService   {
     public UniversityApplication getApplicationByUniversityId(int universityId) {
         return universityApplicationRepository.getApplicationByUniversityId(universityId);
     }
+
+    
+
+
+
 }

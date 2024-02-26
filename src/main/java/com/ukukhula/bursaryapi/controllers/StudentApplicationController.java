@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,7 +25,7 @@ import com.ukukhula.bursaryapi.services.StudentApplicationService;
 
 @RestController
 @RestControllerAdvice
-
+@RequestMapping("/studentapplication")
 public class StudentApplicationController {
 
     private final StudentApplicationService studentApplicationService;
@@ -94,6 +96,18 @@ public class StudentApplicationController {
             throw new Error(error.getMessage());
         }
     }
+    //
+    /*TODO */
+    // @PostMapping("/new")
+    // public ResponseEntity<?> createStudentsApplication(@RequestBody )
+    // {
+    //     //grab email of the person making the request
+    //     //grab their user idea
+
+    //     int id= studentApplicationService.createApplication();
+
+
+    // }
 
     @PutMapping("/student/updateColumn/{studentID}")
     public ResponseEntity<?> updateStudentsApplicationColumnValue(@PathVariable int studentID,
