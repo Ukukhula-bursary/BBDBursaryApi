@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ukukhula.bursaryapi.entities.User;
+import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
+import com.ukukhula.bursaryapi.entities.Request.UpdateRoleRequest;
 import com.ukukhula.bursaryapi.entities.Request.UserRequest;
 import com.ukukhula.bursaryapi.services.UserService;
 
@@ -67,13 +69,25 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     @PutMapping("/update")
     public ResponseEntity<Void> updateUser(@RequestBody UserRequest userRequest) {
         int result = userService.update(userRequest);
         if (result != -1) {
-            return ResponseEntity.ok().build(); 
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/UpdateRole")
+    public ResponseEntity<Void> setNewRole(UpdateRoleRequest role) {
+        boolean result = userService.UpdateRole(role);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

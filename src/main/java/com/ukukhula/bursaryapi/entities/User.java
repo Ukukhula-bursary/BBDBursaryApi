@@ -24,7 +24,6 @@ public class  User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contactId = contactId;
-      
         this.IsActiveID = IsActiveID;
     }
 }

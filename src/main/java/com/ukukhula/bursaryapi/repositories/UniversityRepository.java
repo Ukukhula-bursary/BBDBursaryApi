@@ -21,7 +21,7 @@ public class UniversityRepository {
           "uspAddUniversityByName(?)}";
   private static final String GET_UNIVERSITY_BY_ID = "{CALL " +
           "uspGetUniversityById(?)}";
-  private static final String GET_ALL_UNIVERSITIES = "SELECT  UniversityName, FROM Universities";
+  private static final String GET_ALL_UNIVERSITIES = "SELECT  UniversityName FROM Universities";
 
   
   private final JdbcTemplate jdbcTemplate;

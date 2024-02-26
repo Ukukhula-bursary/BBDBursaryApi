@@ -35,23 +35,17 @@ public class UniversityController {
   }
 
   @GetMapping("/all")
-  public CollectionModel<University> all() {
+  public ResponseEntity<List<University>> all() {
 
     List<University> universities = universityService.getAllUniversities();
-    // .stream()
-    //     .map(assembler::toModel)
-    //     .collect(Collectors.toList());
 
-    return CollectionModel.of(universities);
+    return ResponseEntity.ok(universities);
   }
 
   @PostMapping("/add")
   public ResponseEntity<?> newUniversity(@RequestBody University newUniversity) {
-  University entityModel = universityService.addUniversity(newUniversity.getName());
-  return ResponseEntity.ok(entityModel);
-
-    // return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-    //     .body(entityModel);
+    University entityModel = universityService.addUniversity(newUniversity.getName());
+    return ResponseEntity.ok(entityModel);
   }
 
   @GetMapping("/{id}")
