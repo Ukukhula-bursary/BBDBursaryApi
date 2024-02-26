@@ -1,10 +1,17 @@
 package com.ukukhula.bursaryapi.repositories;
 
 import com.ukukhula.bursaryapi.entities.StudentApplication;
+import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
+import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
+
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,18 +25,18 @@ public class StudentApplicationRepository {
 
     private final RowMapper<StudentApplication> studentRowMapper = ((resultSet,
             rowNumber) -> {
-        return new StudentApplication(resultSet.getInt("ID"),
+        return new StudentApplication(resultSet.getInt("StudentApplicationID"),
                 resultSet.getInt("StudentID"),
                 resultSet.getString("Motivation"),
                 resultSet.getBigDecimal("BursaryAmount"),
-                resultSet.getString("Status"),
-                resultSet.getString("RejectionReason"),
+                resultSet.getString("StatusID"),
+                resultSet.getString("ReviewerComment"),
                 resultSet.getDate("Date"));
     });
 
     
     public StudentApplication findByStudentID(int studentID) {
-        String SQL = "SELECT * FROM StudentApplication WHERE StudentID = ?";
+        String SQL = "SELECT * FROM StudentApplications WHERE StudentID = ?";
 
         StudentApplication students = jdbcTemplate.queryForObject(SQL, studentRowMapper, studentID);
         return students;
@@ -45,7 +52,7 @@ public class StudentApplicationRepository {
 
     
     public Integer updateStudentsApplicationStatus(int studentID, String status) {
-        final String SQL = "UPDATE StudentApplication SET Status = ? WHERE StudentID = ?";
+        final String SQL = "UPDATE StudentApplications SET Status = ? WHERE StudentID = ?";
 
         return jdbcTemplate.update(SQL, status, studentID);
     }
@@ -53,14 +60,44 @@ public class StudentApplicationRepository {
 
     public Integer updateStudentsApplicationColumnValue(int studentID, String columnName, String value) {
 
-        // for later if we get time: data type validation
-        // Class<?> columnType = ColumnValueConverter.getColumnDataType(columnName);
-        // Object convertedValue = ColumnValueConverter.convertValueToType(value,
-        // columnType);
-
-        final String SQL = "UPDATE StudentApplication SET " + columnName + " = ? WHERE StudentID = ?";
+        final String SQL = "UPDATE StudentApplications SET " + columnName + " = ? WHERE StudentID = ?";
 
         return jdbcTemplate.update(SQL, value, studentID);
     }
+
+
+    public int createApplication(StudentApplicationRequest student) {
+        System.out.println(student.getBursaryAmount());
+        System.out.println(student.getIDNumber());
+        System.out.println(student.getHodEmail());
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+                .withProcedureName("AddStudentApplication");
+        try {
+            MapSqlParameterSource inParams = new MapSqlParameterSource()
+                    .addValue("FirstName", student.getFirstName())
+                    .addValue("LastName", student.getLastName())
+                    .addValue("PhoneNumber", student.getPhoneNumber())
+                    .addValue("Email", student.getEmail())
+                    .addValue("Motivation", student.getMotivation())
+                    .addValue("BursaryAmount", student.getBursaryAmount())
+                    .addValue("IDNumber", student.getIDNumber())
+                    .addValue("EthnicityID", student.getEthnicityID())
+                    .addValue("HoDEmail", student.getHodEmail());
+    
+            simpleJdbcCall.execute(inParams);
+    
+            return 1;
+        } catch (Exception e) {
+          
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
+    public int updateApplication(UpdateStudentApplicationRequest student) {
+            return 1;
+    }
+    
 
 }

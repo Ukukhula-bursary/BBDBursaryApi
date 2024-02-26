@@ -1,11 +1,13 @@
 package com.ukukhula.bursaryapi.controllers;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 // import com.ukukhula.bursaryapi.assemblers.StudentApplicationAssembler;
 import com.ukukhula.bursaryapi.entities.StudentApplication;
+import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
+import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
 import com.ukukhula.bursaryapi.exceptions.StudentApplicationException;
 import com.ukukhula.bursaryapi.exceptions.ApplicationInvalidStatusException;
 import com.ukukhula.bursaryapi.services.StudentApplicationService;
@@ -54,13 +59,9 @@ public class StudentApplicationController {
     }
 
     @GetMapping("/students")
-    public CollectionModel<StudentApplication> getAllStudentApplications() {
+    public ResponseEntity<List<StudentApplication>> getAllStudentApplications() {
         List<StudentApplication> applications = studentApplicationService.getAllStudentsApplications();
-                // .stream()
-                // .map(assembler::toModel)
-                // .collect(Collectors.toList());
-
-        return CollectionModel.of(applications);
+        return ResponseEntity.ok(applications);
     }
 
     @ExceptionHandler({ StudentApplicationException.class,
@@ -97,17 +98,38 @@ public class StudentApplicationController {
         }
     }
     //
-    /*TODO */
-    // @PostMapping("/new")
-    // public ResponseEntity<?> createStudentsApplication(@RequestBody )
-    // {
-    //     //grab email of the person making the request
-    //     //grab their user idea
+   
+    @PostMapping("/new")
+    public ResponseEntity<?> createStudentsApplication(@RequestBody StudentApplicationRequest student)
+    {
+        //grab email of the person making the request
+        //grab their user idea
+        int id= studentApplicationService.createApplication(student);
+        if (id != -1) {
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+            return ResponseEntity.created(location).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
-    //     int id= studentApplicationService.createApplication();
+
+    }
+    @GetMapping("/update")
+    public ResponseEntity<?> updateStudentsApplication(@RequestBody UpdateStudentApplicationRequest student)
+    {
+        //grab email of the person making the request
+        //grab their user idea
+        int id= studentApplicationService.updateApplication(student);
+        if (id != -1) {
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+            return ResponseEntity.created(location).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
 
-    // }
+    }
+
 
     @PutMapping("/student/updateColumn/{studentID}")
     public ResponseEntity<?> updateStudentsApplicationColumnValue(@PathVariable int studentID,
