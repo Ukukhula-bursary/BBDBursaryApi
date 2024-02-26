@@ -19,11 +19,11 @@ public class  UserRequest {
     private String firstName;
     private String lastName;
   
-    private int userRoleId;
     // private int contactId;
     private String PhoneNumber;
     private String Email;
     private int IsActiveID;
+    private int userRoleId;
 
     public UserRequest(String firstName, String lastName,String phoneNumber ,String email , int IsActiveID,int userRoleId) {
         // this.id = id;

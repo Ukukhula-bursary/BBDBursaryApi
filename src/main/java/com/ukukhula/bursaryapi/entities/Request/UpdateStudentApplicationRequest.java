@@ -18,7 +18,7 @@ import lombok.Data;
 
 
 @Data
-public class StudentApplicationRequest {
+public class UpdateStudentApplicationRequest {
 
    private String FirstName;
    private String LastName;
@@ -27,24 +27,21 @@ public class StudentApplicationRequest {
 //    private String 
     private String motivation;
     private double bursaryAmount;
-    private String IDNumber;
-    private int ethnicityID;
     private String hodEmail;
    
 
-    // Constructor
-    public StudentApplicationRequest( String FirstName, String LastName,String motivation,
+    // Constructor 
+    public UpdateStudentApplicationRequest( String FirstName, String LastName,String motivation,
                                      String bursaryAmount, String Email,
-                                     String PhoneNumber,
-                                      String IDNumber, int ethnicityID,String hodEmail
+                                     String PhoneNumber,String hodEmail
                                      ) {
     
         this.motivation = motivation;
         this.bursaryAmount = Double.parseDouble(bursaryAmount);
-        this.IDNumber = IDNumber;
-        this.ethnicityID = ethnicityID;
+    
         this.hodEmail=hodEmail;
         this.Email=Email;
+    
         this.motivation=motivation;
     }
 
