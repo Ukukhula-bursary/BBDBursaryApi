@@ -9,6 +9,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,22 +115,30 @@ public class StudentApplicationController {
 
 
     }
-    @GetMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<?> updateStudentsApplication(@RequestBody UpdateStudentApplicationRequest student)
     {
-        //grab email of the person making the request
-        //grab their user idea
+       
         int id= studentApplicationService.updateApplication(student);
-        if (id != -1) {
+        if (id >=1) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
             return ResponseEntity.created(location).build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
-
     }
-
+    @DeleteMapping("/delete/{applicationID}")
+    public ResponseEntity<?> deleteStudentsApplication(@PathVariable int applicationID)
+    {
+       
+        int id= studentApplicationService.deleteApplication(applicationID);
+        if (id >=1) {
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+            return ResponseEntity.created(location).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
     @PutMapping("/student/updateColumn/{studentID}")
     public ResponseEntity<?> updateStudentsApplicationColumnValue(@PathVariable int studentID,

@@ -40,8 +40,8 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
      @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/") // Define the endpoint for which you want to allow CORS
-                .allowedOrigins("http://localhost:8080/") // Allow requests from this origin
+        registry.addMapping("/auth/login") // Define the endpoint for which you want to allow CORS
+                .allowedOrigins("*") // Allow requests from this origin
                 .allowedMethods("*") // Allow only specified methods
                 .allowedHeaders("*"); // Allow all headers
     }

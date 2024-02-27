@@ -31,6 +31,7 @@ public class UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+   
 
     public int save(UserRequest user) {
         return userRepository.addUser(user);
@@ -43,4 +44,5 @@ public class UserService {
     public boolean UpdateRole(UpdateRoleRequest role) {
         return userRepository.UpdateRole(role.getEmail(), role.getRoleID());
     }
+
 }

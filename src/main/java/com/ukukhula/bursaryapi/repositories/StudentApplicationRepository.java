@@ -95,9 +95,30 @@ public class StudentApplicationRepository {
     }
 
 
-    public int updateApplication(UpdateStudentApplicationRequest student) {
-            return 1;
+    public int updateApplication(UpdateStudentApplicationRequest request) {
+       
+            String sql = "{CALL UpdateStudentApplication (?, ?, ?, ?, ?, ?, ?, ?)}";
+    System.out.println(request.studentID);
+    System.out.println(request.studentApplicationID);
+    System.out.println(request.getMotivation());
+            return jdbcTemplate.update(sql,
+                    request.getStudentApplicationID(),
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getPhoneNumber(),
+                    request.getEmail(),
+                    request.getMotivation(),
+                    request.getBursaryAmount(),
+                    request.getStudentID());
+        
     }
+
+
+    public int deleteApplication(int applicationID) {
+        String sql = "DELETE FROM StudentApplications WHERE StudentApplicationID = ?";
+        return jdbcTemplate.update(sql, applicationID);
+    }
+    
     
 
 }

@@ -1,51 +1,36 @@
 package com.ukukhula.bursaryapi.entities.Request;
 
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-
-import com.ukukhula.bursaryapi.entities.Contact;
-import com.ukukhula.bursaryapi.entities.User;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import lombok.Data;
-
 
 @Data
 public class UpdateStudentApplicationRequest {
 
-   private String FirstName;
-   private String LastName;
-   private String PhoneNumber;
-   private String Email;
-//    private String 
+    private String FirstName;
+    private String LastName;
+    private String PhoneNumber;
+    private String Email;
     private String motivation;
-    private double bursaryAmount;
-    private String hodEmail;
-   
+    private Double bursaryAmount;
+    public int studentApplicationID;
+    public int studentID;
 
-    // Constructor 
-    public UpdateStudentApplicationRequest( String FirstName, String LastName,String motivation,
-                                     String bursaryAmount, String Email,
-                                     String PhoneNumber,String hodEmail
-                                     ) {
-    
-        this.motivation = motivation;
-        this.bursaryAmount = Double.parseDouble(bursaryAmount);
-    
-        this.hodEmail=hodEmail;
-        this.Email=Email;
-    
-        this.motivation=motivation;
+  
+    public UpdateStudentApplicationRequest(String FirstName, String LastName, String motivation,
+            String bursaryAmount, String Email,
+            String PhoneNumber, int studentApplicationID, int studentID) {
+
+        this.FirstName = isNullOrEmpty(FirstName) ? null : FirstName;
+        this.LastName = isNullOrEmpty(LastName) ? null : LastName;
+        this.PhoneNumber = isNullOrEmpty(PhoneNumber) ? null : PhoneNumber;
+        this.Email = isNullOrEmpty(Email) ? null : Email;
+        this.motivation = isNullOrEmpty(motivation) ? null : motivation;
+        this.bursaryAmount = isNullOrEmpty(bursaryAmount) ? null : Double.parseDouble(bursaryAmount);
+        this.studentApplicationID = studentApplicationID;
+        this.studentID = studentID;
     }
 
- 
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.trim().isEmpty();
+    }
 }
-
-

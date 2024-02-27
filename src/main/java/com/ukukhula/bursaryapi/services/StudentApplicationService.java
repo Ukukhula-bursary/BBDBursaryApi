@@ -40,4 +40,8 @@ public class StudentApplicationService {
     public int updateApplication(UpdateStudentApplicationRequest student) {
         return studentApplicationRepository.updateApplication(student);
     }
+
+    public int deleteApplication(int applicationID) {
+       return studentApplicationRepository.deleteApplication(applicationID);
+    }
 }
