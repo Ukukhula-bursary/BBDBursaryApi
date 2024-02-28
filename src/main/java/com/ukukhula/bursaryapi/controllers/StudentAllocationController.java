@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.ukukhula.bursaryapi.entities.StudentAllocation;
 import com.ukukhula.bursaryapi.services.StudentAllocationService;
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @Controller
 public class StudentAllocationController {
 

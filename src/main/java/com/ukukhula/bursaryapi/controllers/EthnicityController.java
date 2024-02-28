@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ukukhula.bursaryapi.entities.Ethnicity;
 import com.ukukhula.bursaryapi.services.EthnicityService;
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RestController
 @RestControllerAdvice
 @RequestMapping("/Ethnicity")

@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-// import com.ukukhula.bursaryapi.assemblers.StudentApplicationAssembler;
 import com.ukukhula.bursaryapi.entities.StudentApplication;
 import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
 import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
@@ -30,15 +28,13 @@ import com.ukukhula.bursaryapi.exceptions.StudentApplicationException;
 import com.ukukhula.bursaryapi.exceptions.ApplicationInvalidStatusException;
 import com.ukukhula.bursaryapi.services.StudentApplicationService;
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RestController
 @RestControllerAdvice
 @RequestMapping("/studentapplication")
 public class StudentApplicationController {
 
     private final StudentApplicationService studentApplicationService;
-    // private final StudentApplicationAssembler assembler;
-
     public StudentApplicationController(StudentApplicationService studentApplicationService) {
         this.studentApplicationService = studentApplicationService;
         // this.assembler = assembler;
@@ -55,8 +51,6 @@ public class StudentApplicationController {
         if (application == null) {
             return ResponseEntity.notFound().build();
         }
-
-       // EntityModel<StudentApplication> entityModel = assembler.toModel(application);
 
         return ResponseEntity.ok(application);
     }

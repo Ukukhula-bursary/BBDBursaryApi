@@ -10,7 +10,7 @@ import com.ukukhula.bursaryapi.entities.Contact;
 import com.ukukhula.bursaryapi.services.ContactService;
 
 @RestController
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RequestMapping("/Contact")
 public class ContactController {
     private ContactService service;
