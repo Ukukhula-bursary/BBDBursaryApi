@@ -52,7 +52,7 @@ public class UserRepository {
     private final RowMapper<User> userRowMapper = ((resultSet, rowNumber) -> new User(resultSet.getString("FirstName"),
             resultSet.getString("LastName"),
             resultSet.getInt("ContactID"),
-            resultSet.getInt("IsActiveID")));
+            resultSet.getBoolean("IsActiveUser")));
 
     public int addUser(UserRequest user) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
@@ -63,7 +63,7 @@ public class UserRepository {
                     .addValue("LastName", user.getLastName())
                     .addValue("PhoneNumber", user.getPhoneNumber())
                     .addValue("Email", user.getEmail())
-                    .addValue("IsActive", 1);
+                    .addValue("IsActiveUser", 1);
 
             Map<String, Object> result = simpleJdbcCall.execute(inParams);
 
@@ -86,7 +86,7 @@ public class UserRepository {
                     .addValue("LastName", user.getLastName())
                     .addValue("PhoneNumber", user.getPhoneNumber())
                     .addValue("Email", user.getEmail())
-                    .addValue("IsActive", user.getIsActiveID());
+                    .addValue("IsActiveUser", user.getIsActiveID());
 
             simpleJdbcCall.execute(inParams);
 
