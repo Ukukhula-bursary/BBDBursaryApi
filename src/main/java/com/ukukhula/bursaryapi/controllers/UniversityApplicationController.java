@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RestController
 public class UniversityApplicationController {
 

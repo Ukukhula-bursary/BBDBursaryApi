@@ -23,7 +23,7 @@ import com.ukukhula.bursaryapi.entities.Request.UpdateRoleRequest;
 import com.ukukhula.bursaryapi.entities.Request.UserRequest;
 import com.ukukhula.bursaryapi.services.UserService;
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RestController
 @RequestMapping("/users")
 

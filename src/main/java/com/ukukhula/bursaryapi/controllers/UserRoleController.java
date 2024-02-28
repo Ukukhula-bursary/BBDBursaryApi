@@ -16,7 +16,7 @@ import com.ukukhula.bursaryapi.entities.UserRole;
 import com.ukukhula.bursaryapi.services.UserRoleService;
 
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RestController
 @RequestMapping("/roles")
 public class UserRoleController {
