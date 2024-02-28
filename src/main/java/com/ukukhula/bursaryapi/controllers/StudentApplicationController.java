@@ -9,6 +9,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import com.ukukhula.bursaryapi.exceptions.StudentApplicationException;
 import com.ukukhula.bursaryapi.exceptions.ApplicationInvalidStatusException;
 import com.ukukhula.bursaryapi.services.StudentApplicationService;
 
+@CrossOrigin("*")
 @RestController
 @RestControllerAdvice
 @RequestMapping("/studentapplication")
