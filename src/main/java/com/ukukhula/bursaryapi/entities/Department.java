@@ -11,7 +11,4 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    public Department(String departmentName) {
-        this.departmentName = departmentName;
-    }
 }

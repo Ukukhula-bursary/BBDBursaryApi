@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ukukhula.bursaryapi.entities.Department;
 // import com.ukukhula.bursaryapi.assemblers.UniversityModelAssembler;
 import com.ukukhula.bursaryapi.entities.University;
 
@@ -63,10 +64,22 @@ public class UniversityController {
     University university = universityService.getUniversityById(id);
 
     if (Objects.isNull(university)) {
-      return new ResponseEntity<>("University with ID '" + id + "' was not able to be retrieved", HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>("University with ID '" + id + "' was not able to be retrieved",
+          HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return ResponseEntity.ok(university);
 
+  }
+  
+  @GetMapping("/name={name}")
+  public ResponseEntity<?> getUniversityIdByName(@PathVariable String name) {
+    University university = universityService.getUniversityIdByName(name);
+
+    if (Objects.isNull(university)) {
+        return new ResponseEntity<>("University with name '" + name + "' was not able to be retrieved", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return ResponseEntity.ok(university);
   }
 }

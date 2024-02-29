@@ -35,6 +35,10 @@ public class UniversityService {
   public University getUniversityById(int id) {
     return universityRepository.getUniversityById(id);
   }
+ 
+  public University getUniversityIdByName(String universityName) {
+    return universityRepository.getUniversityIdByName(universityName);
+  }
 
  
   public List<University> getAllUniversities() {
