@@ -25,6 +25,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -34,7 +35,14 @@ public class UniversityStaffRepository {
         "{? = call [dbo].[uspAddUniversityStaff](?, ?, ?, ?, ?, ?, ?)}";
     private static final String GET_UNIVERSITYSTAFF_BY_ID = "SELECT [UniversityStaffID] ,[UserID] ,[UniversityID], [DepartmentID] " +
         "FROM [dbo].[UniversityStaff] " +
-        "WHERE [UniversityStaffID] = ?";
+            "WHERE [UniversityStaffID] = ?";
+    private static final String GET_ALL_UNIVERSITYSTAFF = 
+        "SELECT " +
+            "[UniversityStaffID]" + 
+            ",[UserID]" + 
+            ",[UniversityID]" + 
+            ",[DepartmentID] " +
+        "FROM [dbo].[UniversityStaff]";
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -66,7 +74,8 @@ public class UniversityStaffRepository {
                     put("Email", universityStaffDetails.getEmail());
                     put("UniversityID", universityId);
                     put("DepartmentID", departmentId);
-                    put("RoleID", 4);
+                            put("RoleID", 4);
+                            put("NewUniversityStaffID", 0);
                 }}
             );
 
@@ -96,12 +105,27 @@ public class UniversityStaffRepository {
             return null;
         } catch (Exception e) {
             System.out
-                    .println("\n\n## Unexpected error occurred when retrieving university staff with ID, at repository level ##\n\n");
+                    .println(
+                            "\n\n## Unexpected error occurred when retrieving university staff with ID, at repository level ##\n\n");
             System.out.println(e.getMessage());
             return null;
         }
     }
   
+    public List<UniversityStaff> getAllUniversityStaff() {
+        try {
+        return jdbcTemplate.query(GET_ALL_UNIVERSITYSTAFF, universityStaffRowMapper);
+        } catch (EmptyResultDataAccessException e) {
+        System.out.println("\n\n## Couldn't retrieve university staff list from database ##\n\n");
+        System.out.println(e.getMessage());
+        return null;
+        } catch (Exception e) {
+        System.out
+            .println("\n\n## Unexpected error occurred when trying to retrieve all university staff from database ##\n\n");
+        System.out.println(e.getMessage());
+        return null;
+        }
+    }
 
     private final RowMapper<UniversityStaff> universityStaffRowMapper = ((res, rowNum) -> 
     new UniversityStaff(

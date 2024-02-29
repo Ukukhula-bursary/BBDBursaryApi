@@ -38,23 +38,19 @@ public class UniversityStaffController {
     this.universityStaffService = universityStaffService;
   }
 
-  // @GetMapping("/all")
-  // public ResponseEntity<?> all() {
+  @GetMapping("/all")
+  public ResponseEntity<?> all() {
 
-  //   List<UniversityStaff> universities = universityStaffService.getAllUniversities();
+    List<UniversityStaff> allUniversityStaff = universityStaffService.getAllUniversityStaff();
 
-  //   if(Objects.isNull(universities)) {
-  //     return new ResponseEntity<>("Unable to retrieve universities", HttpStatus.INTERNAL_SERVER_ERROR);
-  //   }
-  //   return ResponseEntity.ok(universities);
-  // }
+    if(Objects.isNull(allUniversityStaff)) {
+      return new ResponseEntity<>("Unable to retrieve all university staff", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return ResponseEntity.ok(allUniversityStaff);
+  }
 
   @PostMapping("/add")
   public ResponseEntity<?> addUniversityStaff(@RequestBody UniversityStaffDetails newUniversityStaffDetails) {
-    System.out.println("\n\n\n");
-    System.out.println(newUniversityStaffDetails.toString());
-    System.out.println("\n\n\n");
-
 
     UniversityStaff insertedUniversityStaff = universityStaffService.addUniversityStaff(newUniversityStaffDetails);
     if (Objects.isNull(insertedUniversityStaff)) {
@@ -63,27 +59,17 @@ public class UniversityStaffController {
     return ResponseEntity.ok(insertedUniversityStaff);
   }
 
-  // @GetMapping("/id={id}")
-  // public ResponseEntity<?> one(@PathVariable int id) {
-  //   UniversityStaff universityStaff = universityStaffService.getUniversityStaffById(id);
+  @GetMapping("/id={id}")
+  public ResponseEntity<?> getUniversityStaffById(@PathVariable int id) {
+    UniversityStaff universityStaff = universityStaffService.getUniversityStaffById(id);
 
-  //   if (Objects.isNull(universityStaff)) {
-  //     return new ResponseEntity<>("UniversityStaff with ID '" + id + "' was not able to be retrieved",
-  //         HttpStatus.INTERNAL_SERVER_ERROR);
-  //   }
+    if (Objects.isNull(universityStaff)) {
+      return new ResponseEntity<>("University Staff with ID '" + id + "' was not able to be retrieved",
+          HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  //   return ResponseEntity.ok(universityStaff);
+    return ResponseEntity.ok(universityStaff);
 
-  // }
+  }
   
-  // @GetMapping("/name={name}")
-  // public ResponseEntity<?> getUniversityStaffIdByName(@PathVariable String name) {
-  //   UniversityStaff universityStaff = universityStaffService.getUniversityStaffIdByName(name);
-
-  //   if (Objects.isNull(universityStaff)) {
-  //       return new ResponseEntity<>("UniversityStaff with name '" + name + "' was not able to be retrieved", HttpStatus.INTERNAL_SERVER_ERROR);
-  //   }
-
-  //   return ResponseEntity.ok(universityStaff);
-  // }
 }

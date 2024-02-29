@@ -1,6 +1,7 @@
 package com.ukukhula.bursaryapi.services;
 
 import com.ukukhula.bursaryapi.entities.Department;
+import com.ukukhula.bursaryapi.entities.University;
 import com.ukukhula.bursaryapi.entities.UniversityStaff;
 import com.ukukhula.bursaryapi.entities.UniversityStaffDetails;
 import com.ukukhula.bursaryapi.repositories.DepartmentRepository;
@@ -32,12 +33,12 @@ public class UniversityStaffService {
         return universityStaffRepository.getUniversityStaffById(universityStaffID);
     }
 
-    // public Department getDepartmentIdByName(String name) {
-    //     return departmentRepository.getDepartmentIdByName(name);
-    // }
+    public UniversityStaff getUniversityStaffById(int id) {
+    return universityStaffRepository.getUniversityStaffById(id);
+  }
 
-
-    // public List<Department> getAllDepartments() {
-    //     return departmentRepository.getAllDepartments();
-    // }
+ 
+  public List<UniversityStaff> getAllUniversityStaff() {
+    return universityStaffRepository.getAllUniversityStaff();
+  }
 }
