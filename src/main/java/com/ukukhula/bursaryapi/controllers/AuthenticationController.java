@@ -80,7 +80,7 @@ public class AuthenticationController {
 
         if(user.isPresent())
         {
-            String token=jwtIssuer.issue(user.get().getUserRoleId(), emailAddress);
+            String token=jwtIssuer.issue(user.get().getRoleId(), emailAddress);
             return ResponseEntity.ok(token);
 
         }else{

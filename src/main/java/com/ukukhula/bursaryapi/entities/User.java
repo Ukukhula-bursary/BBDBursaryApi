@@ -16,7 +16,7 @@ public class  User {
     private String firstName;
     private String lastName;
     private int contactId;
-    private int userRoleId;
+    private int roleId;
     private boolean IsActiveUser;
 
     public User(String firstName, String lastName, int contactId , boolean IsActiveUser) {
