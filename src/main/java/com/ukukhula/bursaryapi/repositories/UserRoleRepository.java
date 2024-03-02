@@ -14,28 +14,29 @@ import com.ukukhula.bursaryapi.entities.UserRole;
 public class UserRoleRepository {
     private JdbcTemplate jdbcTemplate;
 
-    public UserRoleRepository(JdbcTemplate jdbcTemplate)
-    {
-        this.jdbcTemplate=jdbcTemplate;
+    public UserRoleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
 
     }
-    public String findRoleById(int id)
-    {
-         String query="SELECT Role FROM Roles WHERE RoleID= ? ";
 
-        String roleid= jdbcTemplate.queryForObject(query, String.class, id);
+    public String findRoleById(int id) {
+        String query = "SELECT Role FROM Roles WHERE RoleID= ? ";
+
+        String roleid = jdbcTemplate.queryForObject(query, String.class, id);
         return roleid;
     }
-    public List<UserRole> findAll()
-    {
-        String query="SELECT RoleID, Role FROM Roles";
 
-        List<UserRole> roles=jdbcTemplate.query(query,userRoleRowMapper);
+    public List<UserRole> findAll() {
+        String query = "SELECT RoleID, Role FROM Roles";
+
+        List<UserRole> roles = jdbcTemplate.query(query, userRoleRowMapper);
 
         return roles;
-        
+
     }
-      private final RowMapper<UserRole> userRoleRowMapper = ((resultSet, rowNumber) -> new UserRole(resultSet.getInt("RoleID"),
+
+    private final RowMapper<UserRole> userRoleRowMapper = ((resultSet, rowNumber) -> new UserRole(
+            resultSet.getInt("RoleID"),
             resultSet.getString("Role")));
-    
+
 }
