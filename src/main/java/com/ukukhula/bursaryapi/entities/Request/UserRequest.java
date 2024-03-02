@@ -22,17 +22,17 @@ public class  UserRequest {
     // private int contactId;
     private String PhoneNumber;
     private String Email;
-    private int IsActiveID;
-    private int userRoleId;
+    private int IsActiveUser;
+    private int RoleId;
 
-    public UserRequest(String firstName, String lastName,String phoneNumber ,String email , int IsActiveID,int userRoleId) {
+    public UserRequest(String firstName, String lastName,String phoneNumber ,String email , int IsActiveUser,int roleId) {
         // this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.Email=email;
         this.PhoneNumber=phoneNumber;
-        this.IsActiveID = 1;
-        this.userRoleId=userRoleId;
+        this.IsActiveUser = 1;
+        this.RoleId=roleId;
     }
 
 }

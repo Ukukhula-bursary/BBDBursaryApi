@@ -58,18 +58,25 @@ public class UserRepository {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("AddUser");
         try {
+
+            System.out.println("\n\n\n######## Role ID:" + user.getRoleId() + "##################\n\n\n\n");
+
             MapSqlParameterSource inParams = new MapSqlParameterSource()
                     .addValue("FirstName", user.getFirstName())
                     .addValue("LastName", user.getLastName())
                     .addValue("PhoneNumber", user.getPhoneNumber())
                     .addValue("Email", user.getEmail())
-                    .addValue("IsActiveUser", 1);
+                    .addValue("IsActiveUser", 1)
+                    .addValue("RoleID", user.getRoleId())
+                    .addValue("NewUserID", 0)
+                    ;
 
             Map<String, Object> result = simpleJdbcCall.execute(inParams);
-
+            System.out.println("\n\n\n\n****" + (Integer) result.get("NewUserID") + "**********\n\n\n\n\n");
             return (Integer) result.get("NewUserID");
         } catch (Exception e) {
             // Handle exception
+            System.out.println(e.getMessage());
             System.err.println("User exists");
             return -1;
         }
@@ -86,7 +93,7 @@ public class UserRepository {
                     .addValue("LastName", user.getLastName())
                     .addValue("PhoneNumber", user.getPhoneNumber())
                     .addValue("Email", user.getEmail())
-                    .addValue("IsActiveUser", user.getIsActiveID());
+                    .addValue("IsActiveUser", user.getIsActiveUser());
 
             simpleJdbcCall.execute(inParams);
 
