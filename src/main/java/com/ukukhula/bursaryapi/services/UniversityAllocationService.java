@@ -19,29 +19,20 @@ public class UniversityAllocationService {
         this.universityAllocationRepository = universityAllocationRepository;
     }
 
-    public UniversityAllocation findUniversityAllocationById(int id) {
-        return universityAllocationRepository.findById(id);
-    }
-
     public List<UniversityAllocation> getAllUniversityAllocations() {
         return universityAllocationRepository.getAllUniversityAllocations();
     }
 
-    public Integer allocateFundsToUniversity(int id, BigDecimal amount) {
-        return universityAllocationRepository.allocateFundsToUniversity(id, amount);
+    public List<UniversityAllocation> getUniversityAllocationsForYear(int year) {
+        return universityAllocationRepository.getUniversityAllocationsForYear(year);
     }
 
-    public Integer allocateFundsToAllUniversities() {
-        return universityAllocationRepository.allocateFundsToAllUniversities();
+    public List<UniversityAllocation> getUniversityAllocationsForUniversity(String universityName) {
+        return universityAllocationRepository.getUniversityAllocationsForUniversity(universityName);
     }
 
-    public Integer addNewAllocation(int universityId, BigDecimal amount, int bursaryDetails) {
-      
-        return universityAllocationRepository.addNewAllocation(universityId, amount, bursaryDetails);
+    public BigDecimal getRemainingAmountInFundForYear(int year, String universityName) {
+        return universityAllocationRepository.getRemainingAmountInFundForYear(year, universityName);
     }
 
-    public BigDecimal getTotalSpentInYear(int year){
-        return universityAllocationRepository.getTotalSpentInYear(year);
-    }
-   
 }

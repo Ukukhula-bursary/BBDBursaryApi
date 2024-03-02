@@ -2,11 +2,13 @@ package com.ukukhula.bursaryapi.controllers;
 
 // import com.ukukhula.bursaryapi.assemblers.UniversityAllocationAssembler;
 import com.ukukhula.bursaryapi.entities.UniversityAllocation;
+import com.ukukhula.bursaryapi.entities.UniversityStaff;
 import com.ukukhula.bursaryapi.services.UniversityAllocationService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,66 +27,82 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 // @CrossOrigin("*")
 @RestController
-@RequestMapping("/allocations")
+@RequestMapping("/university_allocations")
 public class UniversityAllocationController {
     @Autowired
     private UniversityAllocationService universityAllocationService;
-    // private UniversityAllocationAssembler universityAssembler;
 
     UniversityAllocationController(UniversityAllocationService universityAllocationService) {
-        // this.universityAssembler = universityAssembler;
         this.universityAllocationService = universityAllocationService;
     }
 
-    @GetMapping("/{id}")
-    public UniversityAllocation getUniversityAllocationById(@PathVariable int id) {
-
-        UniversityAllocation universityAllocation = universityAllocationService.findUniversityAllocationById(id);
-
-        return universityAllocation;
-    }
-
     @GetMapping("/all")
-    public List<UniversityAllocation> getAllUniversityAllocations() {
-        return universityAllocationService.getAllUniversityAllocations();
-    }
+    public ResponseEntity<?> getAllUniversityAllocations() {
 
-    @PutMapping("/allocate-to-all")
-    public ResponseEntity<String> allocateFundsEvenlyToApproved() {
-        Integer updatedRows = universityAllocationService.allocateFundsToAllUniversities();
+        List<UniversityAllocation> universityAllocation = universityAllocationService.getAllUniversityAllocations();
 
-        if (updatedRows > 0) {
-            return ResponseEntity.ok("Funds allocated evenly to approved universities.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to allocate funds.");
-        }
-    }
-
-    @PostMapping("/addnew")
-    public String addNewAllocation(@RequestBody Map<String, Object> allocationDetails) {
-        int universityId = Integer.parseInt(allocationDetails.get("universityId").toString());
-        BigDecimal amount = new BigDecimal(allocationDetails.get("amount").toString());
-        int bursaryDetailsId = Integer.parseInt(allocationDetails.get("bursaryDetailsId").toString());
-
-        try {
-            Integer result = universityAllocationService.addNewAllocation(universityId, amount, bursaryDetailsId);
-            return "Allocation added successfully. Rows affected: " + result;
-        } catch (IllegalStateException e) {
-            throw e;
-        }
-    }
-
-    @GetMapping("/totalspent/{year}")
-    public ResponseEntity<Object> getTotalSpentInYear(@PathVariable int year) {
-        try {
-            BigDecimal totalSpent = universityAllocationService.getTotalSpentInYear(year);
-            if (totalSpent == null) {
-                throw new RuntimeException("No allocations for that year");
-            }
-            return ResponseEntity.ok(totalSpent);
-        } catch (RuntimeException e) {
-            throw e;
+        if (Objects.isNull(universityAllocation)) {
+            return new ResponseEntity<>("Unable to retrieve all university allocations",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        if (universityAllocation.size() == 0) {
+            return new ResponseEntity<>("There are no university allocations",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok(universityAllocation);
     }
+
+    @GetMapping("/year={year}")
+    public ResponseEntity<?> getUniversityAllocationsForYear(@PathVariable int year) {
+
+        List<UniversityAllocation> universityAllocations = universityAllocationService
+                .getUniversityAllocationsForYear(year);
+
+        if (Objects.isNull(universityAllocations)) {
+            return new ResponseEntity<>("Unable to retrieve university allocations for year: " + year,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (universityAllocations.size() == 0) {
+            return new ResponseEntity<>("There are no university allocations for year " + year,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok(universityAllocations);
+    }
+
+    @GetMapping("/university_name={universityName}")
+    public ResponseEntity<?> getUniversityAllocationsForUniversity(@PathVariable String universityName) {
+
+        List<UniversityAllocation> universityAllocations = universityAllocationService
+                .getUniversityAllocationsForUniversity(universityName);
+
+        if (Objects.isNull(universityAllocations)) {
+            return new ResponseEntity<>("Unable to retrieve university allocations for university: " + universityName,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (universityAllocations.size() == 0) {
+            return new ResponseEntity<>("There are no university allocations for university " + universityName,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok(universityAllocations);
+    }
+
+    @GetMapping("/remaining_fund/university_name={universityName}/year={year}")
+    public ResponseEntity<?> getRemainingAmountInFundForYear(@PathVariable int year, @PathVariable String universityName) {
+
+        BigDecimal remainingAmount = universityAllocationService.getRemainingAmountInFundForYear(year, universityName);
+
+        if (Objects.isNull(remainingAmount)) {
+            return new ResponseEntity<>(
+                    "Unable to retrieve remaining fund for university: " + universityName + " for year: " + year,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.ok(remainingAmount);
+    }
+
 }
