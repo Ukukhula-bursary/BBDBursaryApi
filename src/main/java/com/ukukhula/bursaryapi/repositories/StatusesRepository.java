@@ -1,18 +1,17 @@
 package com.ukukhula.bursaryapi.repositories;
 
+import com.ukukhula.bursaryapi.entities.DataTransferObject.Statuses;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import com.ukukhula.bursaryapi.entities.DataTransferObject.Statuses;
 
 @Repository
 public class StatusesRepository {
 
   private JdbcTemplate jdbcTemplate;
 
-  public StatusesRepository() {
+  public StatusesRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
