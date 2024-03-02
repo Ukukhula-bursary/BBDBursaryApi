@@ -2,6 +2,7 @@ package com.ukukhula.bursaryapi.repositories;
 
 import com.ukukhula.bursaryapi.entities.Contact;
 import com.ukukhula.bursaryapi.entities.User;
+import com.ukukhula.bursaryapi.entities.Dto.jwtUser;
 import com.ukukhula.bursaryapi.entities.Request.UserRequest;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,6 +36,9 @@ public class UserRepository {
                 "ON [dbo].[Users].ContactID = Contacts.ContactID WHERE Contacts.Email = ?";
         List<User> users = jdbcTemplate.query(GET_USER_BY_EMAIL, userRowMapper, email);
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
+    }
+    public jwtUser createJwtUser(User user,String email){
+        return new jwtUser(user.getFirstName(), user.getLastName(), email, user.getContactId(), user.getRoleId(), user.isIsActiveUser());
     }
 
     public List<User> findAll() {

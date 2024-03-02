@@ -1,10 +1,12 @@
 package com.ukukhula.bursaryapi.entities.Dto;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import com.ukukhula.bursaryapi.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,18 +16,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class jwtUser implements UserDetails {
     private String firstName;
     private String lastName;
     private String email;
     private int contactId;
     private int roleId;
+    private Role role;
     private boolean IsActiveUser;
-    public jwtUser(String firstName, String lastName, String email, int roleId) {
+    public jwtUser(String firstName, String lastName, String email, int contactId, int roleId, boolean IsActiveUser) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.contactId = contactId;
         this.roleId = roleId;
+        this.IsActiveUser = IsActiveUser;
+    
         switch (roleId) {
             case 2:
                 this.role = Role.BBDAdmin_Finance;
@@ -46,21 +53,18 @@ public class jwtUser implements UserDetails {
                 this.role = Role.UniversityAdmin;
                 break;
             default:
-                // Set a default role if the userRoleId doesn't match any defined role
-                this.role = Role.Student; // or any other default role you prefer
+                this.role = Role.Student; 
                 break;
         }
-    
     }
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+             return List.of(new SimpleGrantedAuthority(role.name()));
     }
     @Override
     public String getPassword() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+       return null;
     }
     @Override
     public String getUsername() {

@@ -8,6 +8,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ukukhula.bursaryapi.entities.User;
+import com.ukukhula.bursaryapi.entities.Dto.jwtUser;
 import com.ukukhula.bursaryapi.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,14 @@ public class AuthenticationService {//implements AuthenticationProvider{
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-     public String signin(String request) {
+     public String signin(String email) {
     authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-    var user = userRepository.findByEmail(request.getEmail())
+        new UsernamePasswordAuthenticationToken(email,null));
+    User user = userRepository.getUserByEmail(email)
         .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-    var jwt = jwtService.generateToken(user);
-    return JwtAuthenticationResponse.builder().token(jwt).build();
+        jwtUser uJwtUser=userRepository.createJwtUser(user,email);
+    String jwt = jwtService.generateToken(uJwtUser);
+    return jwt;
   }
 
     // @Override
