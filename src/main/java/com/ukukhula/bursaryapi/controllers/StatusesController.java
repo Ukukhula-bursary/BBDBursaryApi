@@ -1,6 +1,6 @@
 package com.ukukhula.bursaryapi.controllers;
 
-import com.ukukhula.bursaryapi.entities.DataTransferObject.Statuses;
+import com.ukukhula.bursaryapi.entities.Statuses;
 import com.ukukhula.bursaryapi.services.StatusesService;
 
 import java.util.List;

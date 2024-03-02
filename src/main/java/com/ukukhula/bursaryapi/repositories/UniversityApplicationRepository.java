@@ -1,6 +1,14 @@
 package com.ukukhula.bursaryapi.repositories;
 
+import com.ukukhula.bursaryapi.entities.StudentApplication;
 import com.ukukhula.bursaryapi.entities.UniversityApplication;
+import com.ukukhula.bursaryapi.entities.Dto.UniversityApplicationDto;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.Year;
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,11 +29,71 @@ public class UniversityApplicationRepository {
         return jdbcTemplate.queryForObject(GET_APPLICATION_BY_UNIVERSITY_ID,
                 universityApplicationRowMapper, universityId);
     }
+    public List<UniversityApplication> getAllUniversityApplication()
+    {
+        String GET_ALL_UNIVERSITY_APPLICATION = "SELECT * FROM UniversityApplications";
+        List<UniversityApplication> universityApplications = jdbcTemplate.query(GET_ALL_UNIVERSITY_APPLICATION, universityApplicationRowMapper);
+        return universityApplications;
+    }
 
     private final RowMapper<UniversityApplication> universityApplicationRowMapper = ((resultSet, rowNumber) -> {
-        return new UniversityApplication(resultSet.getInt("ID"),
+        return new UniversityApplication(resultSet.getInt("UniversityApplicationID"),
                 resultSet.getInt("UniversityID"), resultSet.getString(
-                        "Motivation"), resultSet.getString("Status"),
-                resultSet.getString("RejectionReason"));
+                        "Motivation"), resultSet.getInt("StatusID"),
+             resultSet.getString("Date"),
+                resultSet.getInt("ReviewerID_UserID"),
+                resultSet.getString("ReviewerComment"));
     });
+
+    public List<UniversityApplicationDto> getUniversityApplicationFormated() {
+        List<UniversityApplication> universityApplication = this.getAllUniversityApplication();
+        return universityApplication.stream()
+                .map(this::maptoUniApplicationDto)
+                .toList();
+    }
+       private UniversityApplicationDto maptoUniApplicationDto(UniversityApplication application){
+
+        String status=getStatus(application.getStatusID());
+        String reviewername=getName(application.getReviewerID_UserID());
+        String budget = getBudget(application.getUniversityID(),application.getDate()).toString();
+       
+        return new UniversityApplicationDto(
+            application.getUniversityID(),
+            application.getUniversityApplicationID(),
+            budget,
+            status,
+            application.getMotivation(),
+            application.getDate().toString(),
+            reviewername,
+            application.getReviewerComment());
+     
+    }
+    private BigDecimal getBudget(int universityID, String date) {
+        int year = Integer.parseInt(date.substring(0, 4));
+        System.out.println(year);
+        String budgetQuery = "SELECT TOP 1 ua.Amount " +
+                             "FROM UniversityAllocation ua " +
+                             "LEFT JOIN BursaryDetails bd ON ua.BursaryDetailsID = bd.BursaryDetailsID " +
+                             "WHERE  bd.Year = ? ";
+    
+        return jdbcTemplate.queryForObject(budgetQuery, BigDecimal.class, year);
+    }
+    
+    private String getStatus(int statusID) {
+        String statusq="SELECT Status from Statuses WHERE StatusID=?";
+        String status= jdbcTemplate.queryForObject(statusq,String.class,statusID);
+        return status;
+ 
+     }
+    private String getName(int UserID) {
+        String name="SELECT FirstName from Users WHERE UserID=?";
+        String lastname="SELECT LastName FROM Users WHERE UserID=?";
+
+        String Firstname= jdbcTemplate.queryForObject(name,String.class,UserID);
+        String LastName= jdbcTemplate.queryForObject(lastname, String.class,UserID);
+
+        return Firstname +" "+LastName;
+
+    }
+
 }
