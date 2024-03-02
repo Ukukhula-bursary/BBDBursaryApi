@@ -21,6 +21,37 @@ public class jwtUser implements UserDetails {
     private int contactId;
     private int roleId;
     private boolean IsActiveUser;
+    public jwtUser(String firstName, String lastName, String email, int roleId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.roleId = roleId;
+        switch (roleId) {
+            case 2:
+                this.role = Role.BBDAdmin_Finance;
+                break;
+            case 3:
+                this.role = Role.BBDAdmin_Reviewers;
+                break;
+            case 1:
+                this.role = Role.BBDSuperAdmin;
+                break;
+            case 5:
+                this.role = Role.HOD;
+                break;
+            case 4:
+                this.role = Role.Student;
+                break;
+            case 6:
+                this.role = Role.UniversityAdmin;
+                break;
+            default:
+                // Set a default role if the userRoleId doesn't match any defined role
+                this.role = Role.Student; // or any other default role you prefer
+                break;
+        }
+    
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
@@ -54,5 +85,4 @@ public class jwtUser implements UserDetails {
        }else{
            return false;
        }
-    }
-}
+    }}
