@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ukukhula.bursaryapi.entities.StudentApplication;
+import com.ukukhula.bursaryapi.entities.Dto.StudentApplicationDto;
 import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
 import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
 import com.ukukhula.bursaryapi.exceptions.StudentApplicationException;
@@ -56,8 +57,8 @@ public class StudentApplicationController {
     }
 
     @GetMapping("/students")
-    public ResponseEntity<List<StudentApplication>> getAllStudentApplications() {
-        List<StudentApplication> applications = studentApplicationService.getAllStudentsApplications();
+    public ResponseEntity<List<StudentApplicationDto>> getAllStudentApplications() {
+        List<StudentApplicationDto> applications = studentApplicationService.getStudentApplicationFormated();
         return ResponseEntity.ok(applications);
     }
 

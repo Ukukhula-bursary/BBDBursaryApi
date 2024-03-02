@@ -1,20 +1,19 @@
 package com.ukukhula.bursaryapi.entities;
 
+import java.sql.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class UniversityApplication {
-    private int id;
-    private int universityId;
-    private String motivation;
-    private String status;
-    private String rejectionReason;
+    private int UniversityApplicationID;
+    private int UniversityID;
+    private String Motivation;
+    private int StatusID;
+    private String date;
+    private int ReviewerID_UserID;
+    private String ReviewerComment;
 
-    public UniversityApplication(int id, int universityId, String motivation, String status, String rejectionReason) {
-        this.id = id;
-        this.universityId = universityId;
-        this.motivation = motivation;
-        this.status = status;
-        this.rejectionReason = rejectionReason;
-    }
 }
