@@ -79,6 +79,7 @@ public class StudentApplicationRepository {
         String reviewer=getName(studentApplication.getReviewer_UserID());
         return new StudentApplicationDto(
                 uni.getUniversityId(),
+                studentApplication.getStudentApplicationID(),
                 studentApplication.getStudentID(),
                 uni.getUniversityName(),
                 studentname,

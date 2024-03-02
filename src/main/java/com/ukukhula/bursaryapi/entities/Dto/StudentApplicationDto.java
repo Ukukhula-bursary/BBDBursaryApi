@@ -9,6 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class StudentApplicationDto {
     private int universityID;
+    private int applicationID;
     private int studentId;
     private String university;
     private String studentName;
