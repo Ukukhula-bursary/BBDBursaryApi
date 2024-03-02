@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 public class AuthenticationController {
@@ -56,49 +58,21 @@ public class AuthenticationController {
     @PostMapping("/auth/login")
     public ResponseEntity<String> oAuthlogin(@RequestBody String oauthToken) {
       
-        ObjectMapper mapper = new ObjectMapper();
-       System.out.println(oauthToken);
-      
-        JsonNode rootNode=null;
         try {
-            rootNode = mapper.readTree(oauthToken);
-        } catch (JsonMappingException e) {
-          
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (JsonProcessingException e) {
-         
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            System.out.println(oauthToken);
+            String email = "";
+            Pattern pattern = Pattern.compile("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b");
+            Matcher matcher = pattern.matcher(oauthToken);
+            if (matcher.find()) {
+                email = matcher.group();
+            }
+            System.out.println(email);
+
+            return ResponseEntity.ok(authenticationService.signin(email));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to authenticate user.");
         }
-
-        if(rootNode==null)
-        {
-
-        }
-      
-        String emailAddress = rootNode.get("user").get("emailAddress").asText();
-        Optional<User> user= userService.getUserByEmail(emailAddress);
-
-        if(user.isPresent())
-        {
-            String token=jwtIssuer.issue(user.get().getRoleId(), emailAddress);
-            return ResponseEntity.ok(token);
-
-        }else{
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        // System.out.println(emailAddress);
-       
-    //    System.out.println(oauthToken.get("emailAddress"));
-    // {"user":{"kind":"drive#user","displayName":"Sir MAKHOBA",
-    // "photoLink":"https:\/\/lh3.googleusercontent.com\/a\/ACg8ocKp8TEuTc06c-cbuoZZTLy3v1uIkDCOZv9N9OBz6kRp=s64"
-    // ,"me":true,"permissionId":"16354109988529483724","emailAddress":"manyoba1997@gmail.com"}}
-    
-            // LoginResponse response = LoginResponse.builder().accessToken(oauthToken.toString()).build();
-            // return ResponseEntity.ok(response);
-        // }
-        // Handle invalid token
-        // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 //else {
             // If token is invalid, return unauthorized status
