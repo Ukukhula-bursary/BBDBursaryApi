@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.time.Year;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -71,12 +72,19 @@ public class UniversityApplicationRepository {
     private BigDecimal getBudget(int universityID, String date) {
         int year = Integer.parseInt(date.substring(0, 4));
         System.out.println(year);
-        String budgetQuery = "SELECT TOP 1 ua.Amount " +
+        System.out.println(universityID);
+        String budgetQuery = "SELECT ua.Amount " +
                              "FROM UniversityAllocation ua " +
                              "LEFT JOIN BursaryDetails bd ON ua.BursaryDetailsID = bd.BursaryDetailsID " +
-                             "WHERE  bd.Year = ? ";
-    
-        return jdbcTemplate.queryForObject(budgetQuery, BigDecimal.class, year);
+                             "WHERE  bd.Year = ? AND ua.UniversityID = ?";
+        
+        try {
+        return jdbcTemplate.queryForObject(budgetQuery, BigDecimal.class, year, universityID);
+    } catch (EmptyResultDataAccessException e) {
+        // Log the exception or handle the scenario where no budget amount is found
+        System.err.println("No budget amount found for universityID: " + universityID + " and year: " + year);
+        return BigDecimal.ZERO; // Return a default value (0) or handle the scenario accordingly
+    }
     }
     
     private String getStatus(int statusID) {
