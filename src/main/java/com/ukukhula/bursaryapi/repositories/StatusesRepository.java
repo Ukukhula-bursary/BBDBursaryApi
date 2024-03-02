@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.ukukhula.bursaryapi.entities.DataTransferObject.Statuses;
+import com.ukukhula.bursaryapi.entities.Statuses;
 
 @Repository
 public class StatusesRepository {

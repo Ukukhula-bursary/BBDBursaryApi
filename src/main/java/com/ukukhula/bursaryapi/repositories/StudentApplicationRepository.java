@@ -32,7 +32,7 @@ public class StudentApplicationRepository {
                 resultSet.getInt("StudentID"),
                 resultSet.getString("Motivation"),
                 resultSet.getBigDecimal("BursaryAmount"),
-                resultSet.getString("StatusID"),
+                resultSet.getInt("StatusID"),
                 resultSet.getInt("Reviewer_UserID"),
                 resultSet.getString("ReviewerComment"),
                 resultSet.getDate("Date"),
@@ -72,7 +72,6 @@ public class StudentApplicationRepository {
     private StudentApplicationDto mapToStudentApplicationDto(StudentApplication studentApplication) {
 
         University uni=findStudentUniversity(studentApplication.getStudentID());
-        
         String ethin= getEthnicity(studentApplication.getStudentID());
         String status=getStatus(studentApplication.getStatusID());
         String studentname=getStudentName(studentApplication.getStudentID());
@@ -111,7 +110,7 @@ public class StudentApplicationRepository {
 
     }
 
-    private String getStatus(String statusID) {
+    private String getStatus(int statusID) {
        String statusq="SELECT Status from Statuses WHERE StatusID=?";
        String status= jdbcTemplate.queryForObject(statusq,String.class,statusID);
        return status;

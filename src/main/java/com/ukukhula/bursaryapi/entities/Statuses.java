@@ -1,4 +1,4 @@
-package com.ukukhula.bursaryapi.entities.DataTransferObject;
+package com.ukukhula.bursaryapi.entities;
 
 import lombok.Builder;
 import lombok.Data;

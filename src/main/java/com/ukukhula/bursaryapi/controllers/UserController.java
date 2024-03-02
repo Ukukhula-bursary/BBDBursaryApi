@@ -26,7 +26,6 @@ import com.ukukhula.bursaryapi.services.UserService;
 // @CrossOrigin("*")
 @RestController
 @RequestMapping("/users")
-
 public class UserController {
 
     private final UserService userService;
