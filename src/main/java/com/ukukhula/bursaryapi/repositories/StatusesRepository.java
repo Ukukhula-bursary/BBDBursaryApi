@@ -12,7 +12,7 @@ public class StatusesRepository {
 
   private JdbcTemplate jdbcTemplate;
 
-  public StatusesRepository() {
+  public StatusesRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
