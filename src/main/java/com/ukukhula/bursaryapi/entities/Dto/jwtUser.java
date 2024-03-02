@@ -35,25 +35,25 @@ public class jwtUser implements UserDetails {
     
         switch (roleId) {
             case 2:
-                this.role = Role.BBDAdmin_Finance;
+                this.role = Role.ROLE_BBDAdmin_Finance;
                 break;
             case 3:
-                this.role = Role.BBDAdmin_Reviewers;
+                this.role = Role.ROLE_BBDAdmin_Reviewers;
                 break;
             case 1:
-                this.role = Role.BBDSuperAdmin;
+                this.role = Role.ROLE_BBDSuperAdmin;
                 break;
             case 5:
-                this.role = Role.HOD;
+                this.role = Role.ROLE_HOD;
                 break;
             case 4:
-                this.role = Role.Student;
+                this.role = Role.ROLE_Student;
                 break;
             case 6:
-                this.role = Role.UniversityAdmin;
+                this.role = Role.ROLE_UniversityAdmin;
                 break;
             default:
-                this.role = Role.Student; 
+                this.role = Role.ROLE_Student; 
                 break;
         }
     }
