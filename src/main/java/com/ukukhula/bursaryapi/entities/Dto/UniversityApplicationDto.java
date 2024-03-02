@@ -10,6 +10,7 @@ import lombok.Data;
 public class UniversityApplicationDto {
     private int UniversityID;
     private int ApplicationID;
+    private String University;
     private String Budget;
     private String status;
     private String Motivation;
