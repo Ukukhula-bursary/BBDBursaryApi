@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ukukhula.bursaryapi.entities.StudentApplication;
-import com.ukukhula.bursaryapi.entities.StudentApplicationDetails;
 import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_ActiveStudent;
 import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_NewStudent;
 import com.ukukhula.bursaryapi.entities.Dto.StudentApplicationDto;

@@ -1,7 +1,6 @@
 package com.ukukhula.bursaryapi.repositories;
 
 import com.ukukhula.bursaryapi.entities.StudentApplication;
-import com.ukukhula.bursaryapi.entities.StudentApplicationDetails;
 import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_ActiveStudent;
 import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_NewStudent;
 import com.ukukhula.bursaryapi.entities.University;
