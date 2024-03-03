@@ -187,7 +187,7 @@ public class StudentApplicationRepository {
     final String SQL =
       "UPDATE StudentApplications SET StatusID = ?, ReviewerComment = ? WHERE StudentApplicationID = ?";
 
-    return jdbcTemplate.update(SQL, statusID, studentappID, reviewerComment);
+    return jdbcTemplate.update(SQL, statusID, reviewerComment, studentappID);
   }
 
   public Integer updateStudentsApplicationColumnValue(
