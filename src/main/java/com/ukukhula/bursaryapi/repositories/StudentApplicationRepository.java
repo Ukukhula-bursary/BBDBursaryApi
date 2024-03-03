@@ -151,10 +151,10 @@ public class StudentApplicationRepository {
         return students;
     }
 
-    public Integer updateStudentsApplicationStatus(int studentID, String status) {
-        final String SQL = "UPDATE StudentApplications SET Status = ? WHERE StudentID = ?";
+    public Integer updateStudentsApplicationStatus(int studentappID, int statusid) {
+        final String SQL = "UPDATE StudentApplications SET StatusID = ? WHERE StudentApplicationID = ?";
 
-        return jdbcTemplate.update(SQL, status, studentID);
+        return jdbcTemplate.update(SQL, statusid, studentappID);
     }
 
     public Integer updateStudentsApplicationColumnValue(int studentID, String columnName, String value) {
