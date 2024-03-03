@@ -26,6 +26,7 @@ import com.ukukhula.bursaryapi.entities.StudentApplication;
 import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_ActiveStudent;
 import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_NewStudent;
 import com.ukukhula.bursaryapi.entities.Dto.StudentApplicationDto;
+import com.ukukhula.bursaryapi.entities.Dto.UpdateStudentApplicationDto;
 import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
 import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
 import com.ukukhula.bursaryapi.exceptions.StudentApplicationException;
@@ -60,10 +61,9 @@ public class StudentApplicationController {
         return ResponseEntity.ok(application);
     }
 
-    @PutMapping("/student/{applicationid}/{status}")
-    public ResponseEntity<?> updateStudentsApplicationStatus(@PathVariable int applicationid,
-            @PathVariable int statusid) {
-        int rowsAffected = studentApplicationService.updateStudentsApplicationStatus(applicationid, statusid);
+    @PutMapping("/student/update/status")
+    public ResponseEntity<?> updateStudentsApplicationStatus(@RequestBody UpdateStudentApplicationDto updateBody) {
+        int rowsAffected = studentApplicationService.updateStudentsApplicationStatus(updateBody.getApplicationID(), updateBody.getStatusID());
         return ResponseEntity.ok(rowsAffected);
     }
 
