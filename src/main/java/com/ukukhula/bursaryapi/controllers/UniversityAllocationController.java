@@ -92,6 +92,20 @@ public class UniversityAllocationController {
         return ResponseEntity.ok(universityAllocations);
     }
 
+    @GetMapping("/university_name={universityName}/year={year}")
+    public ResponseEntity<?> getUniversityAllocationsForUniversityYear(@PathVariable String universityName, @PathVariable int year) {
+
+        UniversityAllocation universityAllocation = universityAllocationService
+                .getUniversityAllocationsForUniversityYear(year, universityName);
+
+        if (Objects.isNull(universityAllocation)) {
+            return new ResponseEntity<>("Unable to retrieve university allocation for university: " + universityName + ", for year: " + year,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok(universityAllocation);
+    }
+
     @GetMapping("/remaining_fund/university_name={universityName}/year={year}")
     public ResponseEntity<?> getRemainingAmountInFundForYear(@PathVariable int year, @PathVariable String universityName) {
 
