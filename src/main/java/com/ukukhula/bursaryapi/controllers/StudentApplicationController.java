@@ -39,6 +39,7 @@ import com.ukukhula.bursaryapi.services.StudentApplicationService;
 public class StudentApplicationController {
 
     private final StudentApplicationService studentApplicationService;
+
     public StudentApplicationController(StudentApplicationService studentApplicationService) {
         this.studentApplicationService = studentApplicationService;
         // this.assembler = assembler;
@@ -58,10 +59,14 @@ public class StudentApplicationController {
 
         return ResponseEntity.ok(application);
     }
+
     @PutMapping("/student/{applicationid}/{status}")
-    public ResponseEntity<?> updateStudentsApplicationStatus(@PathVariable int applicationid, @PathVariable String statusid) {
-        int rowsAffected=studentApplicationService.updateStudentsApplicationStatus(applicationid, statusid);
+    public ResponseEntity<?> updateStudentsApplicationStatus(@PathVariable int applicationid,
+            @PathVariable int statusid) {
+        int rowsAffected = studentApplicationService.updateStudentsApplicationStatus(applicationid, statusid);
+        return ResponseEntity.ok(rowsAffected);
     }
+
     @GetMapping("/students")
     public ResponseEntity<List<StudentApplicationDto>> getAllStudentApplications() {
         List<StudentApplicationDto> applications = studentApplicationService.getStudentApplicationFormated();
@@ -70,45 +75,12 @@ public class StudentApplicationController {
 
     @ExceptionHandler({ StudentApplicationException.class,
             ApplicationInvalidStatusException.class })
-            
-    @PutMapping("/status/{studentID}")
-    public ResponseEntity<?> updateStudentsApplicationStatus(@PathVariable int studentID,
-            @RequestBody Map<String, String> requestBody) {
 
-        if (studentID <= 0) {
-            return ResponseEntity.badRequest().body("Student ID is not provided");
-        }
-
-        if (requestBody.isEmpty()) {
-            return ResponseEntity.badRequest().body("Request body is empty");
-        }
-
-        String statusString = requestBody.get("status");
-
-        if (statusString == null || statusString.isEmpty()) {
-            return ResponseEntity.badRequest().body("Status value is missing in the request body");
-        }
-
-        try {
-            Integer rowsAffected = studentApplicationService.updateStudentsApplicationStatus(studentID, statusString);
-
-            if (rowsAffected >= 1) {
-                return ResponseEntity.ok("Student status successful");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception error) {
-            throw new Error(error.getMessage());
-        }
-    }
-    //
-   
     @PostMapping("/new")
-    public ResponseEntity<?> createStudentsApplication(@RequestBody StudentApplicationRequest student)
-    {
-        //grab email of the person making the request
-        //grab their user idea
-        int id= studentApplicationService.createApplication(student);
+    public ResponseEntity<?> createStudentsApplication(@RequestBody StudentApplicationRequest student) {
+        // grab email of the person making the request
+        // grab their user idea
+        int id = studentApplicationService.createApplication(student);
         if (id != -1) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
             return ResponseEntity.created(location).build();
@@ -116,26 +88,25 @@ public class StudentApplicationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-
     }
+
     @PutMapping("/update")
-    public ResponseEntity<?> updateStudentsApplication(@RequestBody UpdateStudentApplicationRequest student)
-    {
-       
-        int id= studentApplicationService.updateApplication(student);
-        if (id >=1) {
+    public ResponseEntity<?> updateStudentsApplication(@RequestBody UpdateStudentApplicationRequest student) {
+
+        int id = studentApplicationService.updateApplication(student);
+        if (id >= 1) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
             return ResponseEntity.created(location).build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     @DeleteMapping("/delete/{applicationID}")
-    public ResponseEntity<?> deleteStudentsApplication(@PathVariable int applicationID)
-    {
-       
-        int id= studentApplicationService.deleteApplication(applicationID);
-        if (id >=1) {
+    public ResponseEntity<?> deleteStudentsApplication(@PathVariable int applicationID) {
+
+        int id = studentApplicationService.deleteApplication(applicationID);
+        if (id >= 1) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
             return ResponseEntity.created(location).build();
         } else {
@@ -179,10 +150,9 @@ public class StudentApplicationController {
 
     }
 
-
-
     @PostMapping("/apply/new")
-    public ResponseEntity<?> addStudentApplication_NewStudent(@RequestBody StudentApplicationDetails_NewStudent studentApplicationDetails_NewStudent) {
+    public ResponseEntity<?> addStudentApplication_NewStudent(
+            @RequestBody StudentApplicationDetails_NewStudent studentApplicationDetails_NewStudent) {
 
         StudentApplication studentApplication = studentApplicationService.studentApplication_NewStudent(
                 studentApplicationDetails_NewStudent);
@@ -190,12 +160,13 @@ public class StudentApplicationController {
         if (Objects.isNull(studentApplication)) {
             return new ResponseEntity<>("Unable to add student application", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
+
         return ResponseEntity.ok(studentApplication);
-  }
+    }
 
     @PostMapping("/apply/active")
-    public ResponseEntity<?> addStudentApplication_ActiveStudent(@RequestBody StudentApplicationDetails_ActiveStudent studentApplicationDetails_ActiveStudent) {
+    public ResponseEntity<?> addStudentApplication_ActiveStudent(
+            @RequestBody StudentApplicationDetails_ActiveStudent studentApplicationDetails_ActiveStudent) {
 
         StudentApplication studentApplication = studentApplicationService.studentApplication_ActiveStudent(
                 studentApplicationDetails_ActiveStudent);
@@ -203,9 +174,8 @@ public class StudentApplicationController {
         if (Objects.isNull(studentApplication)) {
             return new ResponseEntity<>("Unable to add student application", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
-        return ResponseEntity.ok(studentApplication);
-  }
 
-    
+        return ResponseEntity.ok(studentApplication);
+    }
+
 }
