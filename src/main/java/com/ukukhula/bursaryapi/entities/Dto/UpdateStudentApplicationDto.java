@@ -8,4 +8,5 @@ import lombok.Data;
 public class UpdateStudentApplicationDto {
   private int applicationID;
   private int statusID;
+  private String reviewerComment;
 }
