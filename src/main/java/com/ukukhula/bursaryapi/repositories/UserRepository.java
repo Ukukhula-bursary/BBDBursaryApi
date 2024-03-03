@@ -38,7 +38,7 @@ public class UserRepository {
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
     public jwtUser createJwtUser(User user,String email){
-        int role=getRole(email);
+        int role=getUserRoleById(user.get);
         return new jwtUser(user.getFirstName(), user.getLastName(), email, user.getContactId(), role, user.isIsActiveUser());
     }
 
@@ -110,15 +110,15 @@ public class UserRepository {
         }
     }
 
-    public int getRole(String email) {
-        String query = "SELECT r. FROM UserRole ur " +
-                "LEFT JOIN Roles r ON ur.RoleID = r.RoleID " +
-                "LEFT JOIN Users u ON ur.UserID = u.UserID " +
-                "LEFT JOIN Contacts c ON u.ContactID = c.ContactID " +
-                "WHERE c.Email = ?";
+    // public int getRole(String email) {
+    //     String query = "SELECT r. FROM UserRole ur " +
+    //             "LEFT JOIN Roles r ON ur.RoleID = r.RoleID " +
+    //             "LEFT JOIN Users u ON ur.UserID = u.UserID " +
+    //             "LEFT JOIN Contacts c ON u.ContactID = c.ContactID " +
+    //             "WHERE c.Email = ?";
             
-        return jdbcTemplate.queryForObject(query, String.class, email);
-    }
+    //     return jdbcTemplate.queryForObject(query, String.class, email);
+    // }
     public boolean UpdateRole(String email,int RoleID) {
         String query = "INSERT INTO UserRole(UserID, RoleID)" +
                 "SELECT u.UserID, ? AS RoleID" +
@@ -134,5 +134,21 @@ public class UserRepository {
 
             return false;
         }
+    }
+    // public int getUserRole(int userID)
+    // {
+    //     String GETUSERROLE="SELECT UserID FROM USERS u LEFT JOIN"+
+    //     "UserRole r"+
+    //     " "+
+    //     "ON u.UserID=r.UserID WHERE UserID=?";
+    //     return jdbcTemplate.queryForObject(GETUSERROLE,Integer.class,userID);
+    // }
+    public int getUserRoleById(int userID) {
+       String USERROLE="SELECT RoleID FROM UserRole WHERE UserID=?";
+       
+    //    "SELECT Role FROM Roles r "+
+    //    "JOIN UserRole u ON r.RoleID=u.RoleID WHERE u.UserID= ?";
+       int role=jdbcTemplate.queryForObject(USERROLE,Integer.class, userID);
+       return role;
     }
 }
