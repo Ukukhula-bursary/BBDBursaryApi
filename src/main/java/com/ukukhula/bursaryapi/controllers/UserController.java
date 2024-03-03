@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<JsonObject> createUser(@RequestBody UserRequest user) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequest user) {
         int id = userService.save(user);
         if (id != -1) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
