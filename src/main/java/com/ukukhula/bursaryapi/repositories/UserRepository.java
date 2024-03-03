@@ -38,7 +38,8 @@ public class UserRepository {
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
     public jwtUser createJwtUser(User user,String email){
-        int role=getUserRoleById(user.get);
+        int id=getUserIdByEmail(email);
+        int role=getUserRoleById(id);
         return new jwtUser(user.getFirstName(), user.getLastName(), email, user.getContactId(), role, user.isIsActiveUser());
     }
 
@@ -119,6 +120,14 @@ public class UserRepository {
             
     //     return jdbcTemplate.queryForObject(query, String.class, email);
     // }
+    public int getUserIdByEmail(String email) {
+        String GET_USER_ID = "SELECT UserID FROM [dbo].[Users] LEFT JOIN " +
+                "Contacts" +
+                " " +
+                "ON [dbo].[Users].ContactID = Contacts.ContactID WHERE Contacts.Email = ?";
+       int id=jdbcTemplate.queryForObject(GET_USER_ID,Integer.class, email);
+       return id;
+    }
     public boolean UpdateRole(String email,int RoleID) {
         String query = "INSERT INTO UserRole(UserID, RoleID)" +
                 "SELECT u.UserID, ? AS RoleID" +

@@ -1,5 +1,8 @@
 package com.ukukhula.bursaryapi.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,19 +26,24 @@ public class AuthenticationService {//implements AuthenticationProvider{
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
+public Map<String, String> signin(String email) {
+    Map<String, String> response = new HashMap<>();
 
-     public String signin(String email) {
     // authenticationManager.authenticate(
     //     new UsernamePasswordAuthenticationToken(email,"null"));
     User user = userRepository.getUserByEmail(email)
         .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
     jwtUser uJwtUser=userRepository.createJwtUser(user,email);
     uJwtUser.setPassword("null");
-    // system.out.println("User "+uJwtUser.);
+    System.out.println("User "+uJwtUser.getRole());
     String jwt = jwtService.generateToken(uJwtUser);
-    return jwt;
-  }
 
+    // Add JWT token and user role to the response map
+    response.put("jwt", jwt);
+    response.put("userRole", uJwtUser.getRole().toString());
+
+    return response;
+}
     // @Override
     // public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
