@@ -53,10 +53,15 @@ public class SecurityConfig {
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     )
     .authorizeHttpRequests(authorize -> authorize
-      .requestMatchers(HttpMethod.POST, "/OAuth/login").permitAll()
-      .requestMatchers(HttpMethod.GET, "/OAuth/login").permitAll()
-      .anyRequest().authenticated()
-    )
+    .requestMatchers(HttpMethod.POST, "/Oauth/login").permitAll()
+    .requestMatchers(HttpMethod.GET, "/Oauth/login").permitAll()
+    .requestMatchers(HttpMethod.GET, "/swagger-ui").permitAll()
+    .requestMatchers(
+      "/v3/api-docs/**",
+      "/swagger-ui/**",
+      "/swagger-ui.html").permitAll()
+    .anyRequest().authenticated()
+  )
     .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

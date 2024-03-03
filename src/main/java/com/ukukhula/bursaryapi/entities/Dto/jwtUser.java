@@ -23,6 +23,7 @@ public class jwtUser implements UserDetails {
     private String email;
     private int contactId;
     private int roleId;
+    private String password;
     private Role role;
     private boolean IsActiveUser;
     public jwtUser(String firstName, String lastName, String email, int contactId, int roleId, boolean IsActiveUser) {
@@ -64,7 +65,7 @@ public class jwtUser implements UserDetails {
     }
     @Override
     public String getPassword() {
-       return null;
+       return password;
     }
     @Override
     public String getUsername() {

@@ -38,7 +38,8 @@ public class UserRepository {
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
     public jwtUser createJwtUser(User user,String email){
-        return new jwtUser(user.getFirstName(), user.getLastName(), email, user.getContactId(), user.getRoleId(), user.isIsActiveUser());
+        int role=getRole(email);
+        return new jwtUser(user.getFirstName(), user.getLastName(), email, user.getContactId(), role, user.isIsActiveUser());
     }
 
     public List<User> findAll() {
@@ -109,6 +110,15 @@ public class UserRepository {
         }
     }
 
+    public int getRole(String email) {
+        String query = "SELECT r. FROM UserRole ur " +
+                "LEFT JOIN Roles r ON ur.RoleID = r.RoleID " +
+                "LEFT JOIN Users u ON ur.UserID = u.UserID " +
+                "LEFT JOIN Contacts c ON u.ContactID = c.ContactID " +
+                "WHERE c.Email = ?";
+            
+        return jdbcTemplate.queryForObject(query, String.class, email);
+    }
     public boolean UpdateRole(String email,int RoleID) {
         String query = "INSERT INTO UserRole(UserID, RoleID)" +
                 "SELECT u.UserID, ? AS RoleID" +

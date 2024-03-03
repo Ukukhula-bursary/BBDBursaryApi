@@ -22,7 +22,7 @@ public class AuthenticationController {
       
     }
   
-    @PostMapping("/auth/login")
+    @PostMapping("/Oauth/login")
     public ResponseEntity<String> oAuthlogin(@RequestBody String oauthToken) {
       
         try {

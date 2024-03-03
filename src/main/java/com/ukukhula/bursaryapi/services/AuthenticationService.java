@@ -23,12 +23,15 @@ public class AuthenticationService {//implements AuthenticationProvider{
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
+
      public String signin(String email) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(email,null));
+    // authenticationManager.authenticate(
+    //     new UsernamePasswordAuthenticationToken(email,"null"));
     User user = userRepository.getUserByEmail(email)
         .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-        jwtUser uJwtUser=userRepository.createJwtUser(user,email);
+    jwtUser uJwtUser=userRepository.createJwtUser(user,email);
+    uJwtUser.setPassword("null");
+    // system.out.println("User "+uJwtUser.);
     String jwt = jwtService.generateToken(uJwtUser);
     return jwt;
   }
