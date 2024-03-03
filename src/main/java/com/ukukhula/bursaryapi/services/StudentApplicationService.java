@@ -31,8 +31,8 @@ public class StudentApplicationService {
         return studentApplicationRepository.getStudentApplicationFormated();
     }
 
-    public Integer updateStudentsApplicationStatus(int studentID, String status) {
-        return studentApplicationRepository.updateStudentsApplicationStatus(studentID, status);
+    public Integer updateStudentsApplicationStatus(int studentID, int statusid) {
+        return studentApplicationRepository.updateStudentsApplicationStatus(studentID, statusid);
     }
 
     public Integer updateStudentsApplicationColumnValue(int studentID, String columnName, String value) {

@@ -58,7 +58,10 @@ public class StudentApplicationController {
 
         return ResponseEntity.ok(application);
     }
-
+    @PutMapping("/student/{applicationid}/{status}")
+    public ResponseEntity<?> updateStudentsApplicationStatus(@PathVariable int applicationid, @PathVariable String statusid) {
+        int rowsAffected=studentApplicationService.updateStudentsApplicationStatus(applicationid, statusid);
+    }
     @GetMapping("/students")
     public ResponseEntity<List<StudentApplicationDto>> getAllStudentApplications() {
         List<StudentApplicationDto> applications = studentApplicationService.getStudentApplicationFormated();
