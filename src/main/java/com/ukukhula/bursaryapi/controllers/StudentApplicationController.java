@@ -3,6 +3,7 @@ package com.ukukhula.bursaryapi.controllers;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ukukhula.bursaryapi.entities.StudentApplication;
+import com.ukukhula.bursaryapi.entities.StudentApplicationDetails;
+import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_ActiveStudent;
+import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_NewStudent;
 import com.ukukhula.bursaryapi.entities.Dto.StudentApplicationDto;
 import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
 import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
@@ -172,4 +176,34 @@ public class StudentApplicationController {
         }
 
     }
+
+
+
+    @PostMapping("/apply/new")
+    public ResponseEntity<?> addStudentApplication_NewStudent(@RequestBody StudentApplicationDetails_NewStudent studentApplicationDetails_NewStudent) {
+
+        StudentApplication studentApplication = studentApplicationService.studentApplication_NewStudent(
+                studentApplicationDetails_NewStudent);
+
+        if (Objects.isNull(studentApplication)) {
+            return new ResponseEntity<>("Unable to add student application", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        return ResponseEntity.ok(studentApplication);
+  }
+
+    @PostMapping("/apply/active")
+    public ResponseEntity<?> addStudentApplication_ActiveStudent(@RequestBody StudentApplicationDetails_ActiveStudent studentApplicationDetails_ActiveStudent) {
+
+        StudentApplication studentApplication = studentApplicationService.studentApplication_ActiveStudent(
+                studentApplicationDetails_ActiveStudent);
+
+        if (Objects.isNull(studentApplication)) {
+            return new ResponseEntity<>("Unable to add student application", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        return ResponseEntity.ok(studentApplication);
+  }
+
+    
 }

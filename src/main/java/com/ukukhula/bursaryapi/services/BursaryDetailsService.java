@@ -21,7 +21,7 @@ public class BursaryDetailsService {
         this.bursaryDetailsRepository = bursaryDetailsRepository;
     }
     
-    public List<BursaryDetails> getBursaryDetailsByYear(int year) {
+    public BursaryDetails getBursaryDetailsByYear(int year) {
         return bursaryDetailsRepository.getBursaryDetailsByYear(year);
     }
 

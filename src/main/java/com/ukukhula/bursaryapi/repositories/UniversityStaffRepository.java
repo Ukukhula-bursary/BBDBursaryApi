@@ -74,7 +74,7 @@ public class UniversityStaffRepository {
                     put("Email", universityStaffDetails.getEmail());
                     put("UniversityID", universityId);
                     put("DepartmentID", departmentId);
-                    put("RoleID", 4);
+                    put("RoleID", 5);
                     put("NewUniversityStaffID", 0);
                 }}
             );
