@@ -1,6 +1,9 @@
 package com.ukukhula.bursaryapi.services;
 
 import com.ukukhula.bursaryapi.entities.StudentApplication;
+import com.ukukhula.bursaryapi.entities.StudentApplicationDetails;
+import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_ActiveStudent;
+import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_NewStudent;
 import com.ukukhula.bursaryapi.entities.Dto.StudentApplicationDto;
 import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
 import com.ukukhula.bursaryapi.entities.Request.UpdateStudentApplicationRequest;
@@ -47,6 +50,29 @@ public class StudentApplicationService {
     }
 
     public int deleteApplication(int applicationID) {
-       return studentApplicationRepository.deleteApplication(applicationID);
+        return studentApplicationRepository.deleteApplication(applicationID);
+    }
+    
+
+    
+    public StudentApplication studentApplication_NewStudent(StudentApplicationDetails_NewStudent studentApplicationDetails_NewStudent) {
+        int newStudentApplicationId = studentApplicationRepository.studentApplication_NewStudent(studentApplicationDetails_NewStudent);
+
+        if (newStudentApplicationId == 0) {
+            return null;
+        }
+
+        return studentApplicationRepository.getStudentApplicationById(newStudentApplicationId);
+    }
+
+    
+    public StudentApplication studentApplication_ActiveStudent(StudentApplicationDetails_ActiveStudent studentApplicationDetails_ActiveStudent) {
+        int newStudentApplicationId = studentApplicationRepository.studentApplication_ActiveStudent(studentApplicationDetails_ActiveStudent);
+
+        if (newStudentApplicationId == 0) {
+            return null;
+        }
+
+        return studentApplicationRepository.getStudentApplicationById(newStudentApplicationId);
     }
 }

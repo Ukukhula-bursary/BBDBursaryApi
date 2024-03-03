@@ -31,8 +31,13 @@ public class UniversityAllocationService {
         return universityAllocationRepository.getUniversityAllocationsForUniversity(universityName);
     }
 
+    public UniversityAllocation getUniversityAllocationsForUniversityYear(int year, String universityName) {
+        return universityAllocationRepository.getUniversityAllocationsForUniversityYear(year, universityName);
+    }
+
     public BigDecimal getRemainingAmountInFundForYear(int year, String universityName) {
         return universityAllocationRepository.getRemainingAmountInFundForYear(year, universityName);
     }
+
 
 }

@@ -22,4 +22,13 @@ public class EthnicityService {
     {
         return repo.getAll();
     }
+
+     public Ethnicity getEthnicityById(int id) {
+        return repo.getEthnicityById(id);
+    }
+
+    public Ethnicity getEthnicityIdByName(String name) {
+        return repo.getEthnicityIdByName(name);
+    }
+
 }
