@@ -40,6 +40,16 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/get/id={id}")
+    public ResponseEntity<User> getUserById(@PathVariable int id) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get()); // User found, return 200 OK with user details
+        } else {
+            return ResponseEntity.notFound().build(); // User not found, return 404 Not Found
+        }
+    }
+
     @GetMapping("/get/{email}")
     @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
