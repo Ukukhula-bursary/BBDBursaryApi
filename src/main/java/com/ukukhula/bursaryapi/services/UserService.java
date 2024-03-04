@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +22,20 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+    
+  public UserDetailsService userDetailsService() {
+      return new UserDetailsService() {
+          @Override
+          public UserDetails loadUserByUsername(String username) {
+            Optional<User> user= userRepository.getUserByEmail(username);
+            if (user.isPresent()) {
+                return userRepository.createJwtUser(user.get(), username);
+                
+            }
+            throw new UsernameNotFoundException("User not found");
+          }
+      };
+  }
 
     public Optional<User> getUserById(int id) {
         return userRepository.getUserById(id);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.ukukhula.bursaryapi.entities.StudentAllocation;
+import com.ukukhula.bursaryapi.entities.Dto.StudentAllocationDto;
 import com.ukukhula.bursaryapi.services.StudentAllocationService;
 
 // @CrossOrigin("*")
@@ -22,8 +23,8 @@ public class StudentAllocationController {
     }
 
     @GetMapping("/student/allocation")
-    public ResponseEntity<List<StudentAllocation>> getAllStudentAllocations() {
-        List<StudentAllocation> allocations = studentAllocationService.getAllStudentAllocations();
+    public ResponseEntity<List<StudentAllocationDto>> getAllStudentAllocations() {
+        List<StudentAllocationDto> allocations = studentAllocationService.getAllStudentAllocations();
         return ResponseEntity.ok(allocations);
     }
 

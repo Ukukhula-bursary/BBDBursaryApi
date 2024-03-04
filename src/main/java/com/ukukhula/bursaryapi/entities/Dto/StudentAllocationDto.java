@@ -7,14 +7,15 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UniversityApplicationDto {
-    private int UniversityID;
+public class StudentAllocationDto {
     private int ApplicationID;
-    private String University;
-    private String Budget;
+    private String university;
+    private BigDecimal budget;
     private String status;
     private String Motivation;
     private String Date;
     private String reviewerName;
     private String ReviewerComment;
+
+    
 }

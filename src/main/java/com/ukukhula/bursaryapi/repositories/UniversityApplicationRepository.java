@@ -1,12 +1,10 @@
 package com.ukukhula.bursaryapi.repositories;
 
-import com.ukukhula.bursaryapi.entities.StudentApplication;
+
 import com.ukukhula.bursaryapi.entities.UniversityApplication;
 import com.ukukhula.bursaryapi.entities.Dto.UniversityApplicationDto;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.Year;
 import java.util.List;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -57,10 +55,12 @@ public class UniversityApplicationRepository {
         String status=getStatus(application.getStatusID());
         String reviewername=getName(application.getReviewerID_UserID());
         String budget = getBudget(application.getUniversityID(),application.getDate()).toString();
+        String UniversityName=getUniversityName(application.getUniversityID());
        
         return new UniversityApplicationDto(
             application.getUniversityID(),
             application.getUniversityApplicationID(),
+             UniversityName,
             budget,
             status,
             application.getMotivation(),
@@ -69,6 +69,13 @@ public class UniversityApplicationRepository {
             application.getReviewerComment());
      
     }
+    private String getUniversityName(int universityID) {
+        String name="SELECT UniversityName from Universities WHERE UniversityID=?";
+        String universityName= jdbcTemplate.queryForObject(name,String.class,universityID);
+        return universityName;
+    }
+
+
     private BigDecimal getBudget(int universityID, String date) {
         int year = Integer.parseInt(date.substring(0, 4));
         System.out.println(year);

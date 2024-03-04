@@ -16,13 +16,9 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.*;
-import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
 @Repository
 public class BursaryDetailsRepository {
 
@@ -75,8 +71,6 @@ public class BursaryDetailsRepository {
 
             Map<String, Object> out = simpleJdbcCall.withProcedureName("uspEvenlyDistributeYearlyAllocation")
                     .execute(in);
-
-            
 
             return (BigDecimal) out.get("AmountPerUniversity");
             

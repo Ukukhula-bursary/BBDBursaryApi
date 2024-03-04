@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.ukukhula.bursaryapi.entities.StudentAllocation;
+import com.ukukhula.bursaryapi.entities.Dto.StudentAllocationDto;
 import com.ukukhula.bursaryapi.repositories.StudentAllocationRepository;
 import java.math.BigDecimal;
 
@@ -19,8 +20,8 @@ public class StudentAllocationService {
         this.studentAllocationRepository = studentAllocationRepository;
     }
 
-    public List<StudentAllocation> getAllStudentAllocations() {
-        return studentAllocationRepository.getAllStudentAllocations();
+    public List<StudentAllocationDto> getAllStudentAllocations() {
+        return studentAllocationRepository.getStudentAllocationAll();
     }
 
     public StudentAllocation getStudentAllocationById(int id) {

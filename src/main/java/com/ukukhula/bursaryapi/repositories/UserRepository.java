@@ -2,6 +2,7 @@ package com.ukukhula.bursaryapi.repositories;
 
 import com.ukukhula.bursaryapi.entities.Contact;
 import com.ukukhula.bursaryapi.entities.User;
+import com.ukukhula.bursaryapi.entities.Dto.jwtUser;
 import com.ukukhula.bursaryapi.entities.Request.UserRequest;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,6 +42,11 @@ public class UserRepository {
                 "ON [dbo].[Users].ContactID = Contacts.ContactID WHERE Contacts.Email = ?";
         List<User> users = jdbcTemplate.query(GET_USER_BY_EMAIL, userRowMapper, email);
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
+    }
+    public jwtUser createJwtUser(User user,String email){
+        int id=getUserIdByEmail(email);
+        int role=getUserRoleById(id);
+        return new jwtUser(id,user.getFirstName(), user.getLastName(), email, user.getContactId(), role, user.isIsActiveUser());
     }
 
     public List<User> findAll() {
@@ -111,6 +117,23 @@ public class UserRepository {
         }
     }
 
+    // public int getRole(String email) {
+    //     String query = "SELECT r. FROM UserRole ur " +
+    //             "LEFT JOIN Roles r ON ur.RoleID = r.RoleID " +
+    //             "LEFT JOIN Users u ON ur.UserID = u.UserID " +
+    //             "LEFT JOIN Contacts c ON u.ContactID = c.ContactID " +
+    //             "WHERE c.Email = ?";
+            
+    //     return jdbcTemplate.queryForObject(query, String.class, email);
+    // }
+    public int getUserIdByEmail(String email) {
+        String GET_USER_ID = "SELECT UserID FROM [dbo].[Users] LEFT JOIN " +
+                "Contacts" +
+                " " +
+                "ON [dbo].[Users].ContactID = Contacts.ContactID WHERE Contacts.Email = ?";
+       int id=jdbcTemplate.queryForObject(GET_USER_ID,Integer.class, email);
+       return id;
+    }
     public boolean UpdateRole(String email,int RoleID) {
         String query = "INSERT INTO UserRole(UserID, RoleID)" +
                 "SELECT u.UserID, ? AS RoleID" +
@@ -126,5 +149,21 @@ public class UserRepository {
 
             return false;
         }
+    }
+    // public int getUserRole(int userID)
+    // {
+    //     String GETUSERROLE="SELECT UserID FROM USERS u LEFT JOIN"+
+    //     "UserRole r"+
+    //     " "+
+    //     "ON u.UserID=r.UserID WHERE UserID=?";
+    //     return jdbcTemplate.queryForObject(GETUSERROLE,Integer.class,userID);
+    // }
+    public int getUserRoleById(int userID) {
+       String USERROLE="SELECT RoleID FROM UserRole WHERE UserID=?";
+       
+    //    "SELECT Role FROM Roles r "+
+    //    "JOIN UserRole u ON r.RoleID=u.RoleID WHERE u.UserID= ?";
+       int role=jdbcTemplate.queryForObject(USERROLE,Integer.class, userID);
+       return role;
     }
 }
