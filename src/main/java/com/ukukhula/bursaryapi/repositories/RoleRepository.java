@@ -8,8 +8,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.ukukhula.bursaryapi.entities.Department;
-import com.ukukhula.bursaryapi.entities.Role;
 import com.ukukhula.bursaryapi.entities.UserRole;
+import com.ukukhula.bursaryapi.entities.Role;
 
 @Repository
 public class RoleRepository {

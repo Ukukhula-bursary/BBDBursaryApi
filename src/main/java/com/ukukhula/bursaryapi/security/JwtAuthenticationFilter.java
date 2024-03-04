@@ -1,41 +1,62 @@
 package com.ukukhula.bursaryapi.security;
 
+
+import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.ukukhula.bursaryapi.services.JwtService;
+import com.ukukhula.bursaryapi.services.UserService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtDecoder jwtDecoder;
-    private final JwtToPrincipalConverter jwtToPrincipalConverter;
+  
+  private final JwtService jwtService;
+  private final UserService userService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        extractTokenFromRequest(request)
-                .map(jwtDecoder::decode)
-                        .map(jwtToPrincipalConverter::convert)
-                                .map(UserPrincipalAuthenticationToken::new)
-                                        .ifPresent(authentication -> SecurityContextHolder.getContext().setAuthentication(authentication));
-
-        filterChain.doFilter(request, response);
-    }
-
-    private Optional<String> extractTokenFromRequest(HttpServletRequest request){
-        var token = request.getHeader("Authorization");
-        if(StringUtils.hasText(token) && token.startsWith("Bearer ")){
-            return Optional.of(token.substring(7));
-        }
-
-        return Optional.empty();
-    }
+  @Override
+  protected void doFilterInternal(HttpServletRequest request,
+        HttpServletResponse response, 
+        FilterChain filterChain)
+        throws ServletException, IOException {
+      final String authHeader = request.getHeader("Authorization");
+      final String jwt;
+      final String userEmail;
+      if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
+          filterChain.doFilter(request, response);
+          return;
+      }
+      jwt = authHeader.substring(7);
+      log.debug("JWT - {}", jwt.toString());
+      userEmail = jwtService.extractUserName(jwt);
+      if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
+          UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+          if (jwtService.isTokenValid(jwt, userDetails)) {
+            log.debug("User - {}", userDetails);
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            context.setAuthentication(authToken);
+            SecurityContextHolder.setContext(context);
+          }
+      }
+      filterChain.doFilter(request, response);
+  }
 }

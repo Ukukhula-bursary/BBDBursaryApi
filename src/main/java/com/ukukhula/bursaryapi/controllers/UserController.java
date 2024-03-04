@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.parsing.Location;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import com.ukukhula.bursaryapi.services.UserService;
 
 @CrossOrigin("*")
 @RestController
+@EnableMethodSecurity
 @RequestMapping("/users")
 public class UserController {
 
@@ -60,6 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin')")
     public List<User> getAllUsers() {
         return userService.getAll();
     }
