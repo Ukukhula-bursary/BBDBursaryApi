@@ -1,14 +1,12 @@
 package com.ukukhula.bursaryapi.services;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.ukukhula.bursaryapi.entities.StudentAllocation;
 import com.ukukhula.bursaryapi.entities.Dto.StudentAllocationDto;
 import com.ukukhula.bursaryapi.repositories.StudentAllocationRepository;
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Service

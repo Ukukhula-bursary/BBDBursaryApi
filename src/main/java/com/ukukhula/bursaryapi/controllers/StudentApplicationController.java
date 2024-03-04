@@ -19,6 +19,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +49,7 @@ public class StudentApplicationController {
   }
 
   @GetMapping("/student/{studentId}")
+   @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> getStudentApplications(@PathVariable int studentId) {
     if (studentId <= 0) {
       return ResponseEntity.badRequest().body("Student ID is not provided");
@@ -64,6 +66,7 @@ public class StudentApplicationController {
   }
 
   @PutMapping("/student/update/status")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> updateStudentsApplicationStatus(
     @RequestBody UpdateStudentApplicationDto updateBody
   ) {
@@ -76,8 +79,9 @@ public class StudentApplicationController {
   }
 
   @GetMapping("/students")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<List<StudentApplicationDto>> getAllStudentApplications() {
-    List<StudentApplicationDto> applications = studentApplicationService.getStudentApplicationFormated();
+    List<StudentApplicationDto> applications = studentApplicationService.getAllStudentsApplications();
     return ResponseEntity.ok(applications);
   }
 
@@ -88,6 +92,7 @@ public class StudentApplicationController {
     }
   )
   @PostMapping("/new")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> createStudentsApplication(
     @RequestBody StudentApplicationRequest student
   ) {
@@ -107,6 +112,7 @@ public class StudentApplicationController {
   }
 
   @PutMapping("/update")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> updateStudentsApplication(
     @RequestBody UpdateStudentApplicationRequest student
   ) {
@@ -124,6 +130,7 @@ public class StudentApplicationController {
   }
 
   @DeleteMapping("/delete/{applicationID}")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> deleteStudentsApplication(
     @PathVariable int applicationID
   ) {
@@ -141,6 +148,7 @@ public class StudentApplicationController {
   }
 
   @PutMapping("/student/updateColumn/{studentID}")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> updateStudentsApplicationColumnValue(
     @PathVariable int studentID,
     @RequestBody Map<String, String> requestBody
@@ -179,6 +187,7 @@ public class StudentApplicationController {
   }
 
   @PostMapping("/apply/new")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> addStudentApplication_NewStudent(
     @RequestBody StudentApplicationDetails_NewStudent studentApplicationDetails_NewStudent
   ) {
@@ -197,6 +206,7 @@ public class StudentApplicationController {
   }
 
   @PostMapping("/apply/active")
+  @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
   public ResponseEntity<?> addStudentApplication_ActiveStudent(
     @RequestBody StudentApplicationDetails_ActiveStudent studentApplicationDetails_ActiveStudent
   ) {

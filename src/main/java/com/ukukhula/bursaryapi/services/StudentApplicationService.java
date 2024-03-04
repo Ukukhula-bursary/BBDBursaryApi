@@ -25,13 +25,11 @@ public class StudentApplicationService {
     return studentApplicationRepository.findByStudentID(studentID);
   }
 
-  public List<StudentApplication> getAllStudentsApplications() {
+  public List<StudentApplicationDto> getAllStudentsApplications() {
     return studentApplicationRepository.getAllStudentsApplications();
   }
 
-  public List<StudentApplicationDto> getStudentApplicationFormated() {
-    return studentApplicationRepository.getStudentApplicationFormated();
-  }
+ 
 
   public Integer updateStudentsApplicationStatus(
     int studentID,

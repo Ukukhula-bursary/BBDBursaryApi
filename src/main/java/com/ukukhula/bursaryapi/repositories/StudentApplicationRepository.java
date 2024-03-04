@@ -9,6 +9,9 @@ import com.ukukhula.bursaryapi.entities.StudentApplicationDetails_NewStudent;
 import com.ukukhula.bursaryapi.entities.University;
 import com.ukukhula.bursaryapi.entities.UniversityStaff;
 import com.ukukhula.bursaryapi.entities.User;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +71,26 @@ public class StudentApplicationRepository {
       resultSet.getInt("BursaryDetailsID")
     );
   };
+  private final RowMapper<StudentApplicationDto> studentApplicationRowMapper = (
+    resultSet,
+    rowNumber
+  ) -> {
+       return new StudentApplicationDto(
+        resultSet.getInt("universityID"),
+        resultSet.getInt("applicationID"),
+        resultSet.getInt("studentId"),
+        resultSet.getString("university"),
+        resultSet.getString("studentName"),
+        resultSet.getString("ethnicity"), 
+        resultSet.getString("status"),
+        resultSet.getString("motivation"),
+        resultSet.getBigDecimal("bursaryAmount"),
+        resultSet.getString("date"),
+        resultSet.getString("reviewer"),
+        resultSet.getString("reviewerComment")
+        );
+       
+    };
 
   private final RowMapper<University> UniversityRowMapper =
     (
@@ -111,29 +134,29 @@ public class StudentApplicationRepository {
     return ethnicity;
   }
 
-  private StudentApplicationDto mapToStudentApplicationDto(
-    StudentApplication studentApplication
-  ) {
-    University uni = findStudentUniversity(studentApplication.getStudentID());
-    String ethin = getEthnicity(studentApplication.getStudentID());
-    String status = getStatus(studentApplication.getStatusID());
-    String studentname = getStudentName(studentApplication.getStudentID());
-    String reviewer = getName(studentApplication.getReviewer_UserID());
-    return new StudentApplicationDto(
-      uni.getUniversityId(),
-      studentApplication.getStudentApplicationID(),
-      studentApplication.getStudentID(),
-      uni.getUniversityName(),
-      studentname,
-      ethin,
-      status,
-      studentApplication.getMotivation(),
-      studentApplication.getBursaryAmount(),
-      studentApplication.getDate().toString(), // Assuming date is a string representation
-      reviewer,
-      studentApplication.getReviewerComment()
-    );
-  }
+//   private StudentApplicationDto mapToStudentApplicationDto(
+//     StudentApplication studentApplication
+//   ) {
+//     University uni = findStudentUniversity(studentApplication.getStudentID());
+//     String ethin = getEthnicity(studentApplication.getStudentID());
+//     String status = getStatus(studentApplication.getStatusID());
+//     String studentname = getStudentName(studentApplication.getStudentID());
+//     String reviewer = getName(studentApplication.getReviewer_UserID());
+//     return new StudentApplicationDto(
+//       uni.getUniversityId(),
+//       studentApplication.getStudentApplicationID(),
+//       studentApplication.getStudentID(),
+//       uni.getUniversityName(),
+//       studentname,
+//       ethin,
+//       status,
+//       studentApplication.getMotivation(),
+//       studentApplication.getBursaryAmount(),
+//       studentApplication.getDate().toString(), // Assuming date is a string representation
+//       reviewer,
+//       studentApplication.getReviewerComment()
+//     );
+//   }
 
   private String getStudentName(int studentID) {
     String queryuserid = "SELECT UserID FROM Students s WHERE s.StudentID=?";
@@ -165,12 +188,12 @@ public class StudentApplicationRepository {
     return status;
   }
 
-  public List<StudentApplication> getAllStudentsApplications() {
-    final String SQL = "SELECT * FROM StudentApplications";
+  public List<StudentApplicationDto> getAllStudentsApplications() {
+    final String SQL = "SELECT * FROM StudentApplicationView";
 
-    List<StudentApplication> students = jdbcTemplate.query(
+    List<StudentApplicationDto> students = jdbcTemplate.query(
       SQL,
-      studentRowMapper
+      studentApplicationRowMapper
     );
     return students;
   }
@@ -248,14 +271,14 @@ public class StudentApplicationRepository {
     );
   }
 
-  public List<StudentApplicationDto> getStudentApplicationFormated() {
-    List<StudentApplication> studentApplications =
-      this.getAllStudentsApplications();
-    return studentApplications
-      .stream()
-      .map(this::mapToStudentApplicationDto)
-      .toList();
-  }
+//   public List<StudentApplicationDto> getStudentApplicationFormated() {
+//     List<StudentApplication> studentApplications =
+//       this.getAllStudentsApplications();
+//     return studentApplications
+//       .stream()
+//       .map(this::mapToStudentApplicationDto)
+//       .toList();
+//   }
 
   public int deleteApplication(int applicationID) {
     String sql =

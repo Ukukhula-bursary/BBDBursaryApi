@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class StudentAllocationDto {
     private int ApplicationID;
@@ -15,7 +17,5 @@ public class StudentAllocationDto {
     private String Motivation;
     private String Date;
     private String reviewerName;
-    private String ReviewerComment;
-
-    
+    private String ReviewerComment;    
 }

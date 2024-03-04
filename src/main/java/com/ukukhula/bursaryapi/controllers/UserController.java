@@ -41,6 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/get/{email}")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         Optional<User> user = userService.getUserByEmail(email);
         if (user.isPresent()) {
@@ -52,6 +53,7 @@ public class UserController {
 
 
     @GetMapping("/exists/{email}")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
     public ResponseEntity<Boolean> userExists(@PathVariable String email) {
         boolean exists = userService.userExists(email);
         if (exists) {
@@ -69,6 +71,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
     public ResponseEntity<?> createUser(@RequestBody UserRequest user) {
         int id = userService.save(user);
         if (id != -1) {
@@ -82,6 +85,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
     public ResponseEntity<Void> updateUser(@RequestBody UserRequest userRequest) {
         int result = userService.update(userRequest);
         if (result != -1) {
@@ -92,6 +96,7 @@ public class UserController {
     }
 
     @PostMapping("/UpdateRole")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin') or hasRole('ROLE_HOD')")
     public ResponseEntity<Void> setNewRole(UpdateRoleRequest role) {
         boolean result = userService.UpdateRole(role);
         if (result) {

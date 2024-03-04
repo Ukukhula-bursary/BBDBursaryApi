@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,24 +24,28 @@ public class StudentAllocationController {
     }
 
     @GetMapping("/student/allocation")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin')")
     public ResponseEntity<List<StudentAllocationDto>> getAllStudentAllocations() {
         List<StudentAllocationDto> allocations = studentAllocationService.getAllStudentAllocations();
         return ResponseEntity.ok(allocations);
     }
 
     @GetMapping("student/allocation/{id}")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin')")
     public ResponseEntity<StudentAllocation> getStudentAllocationById(@PathVariable int id) {
         StudentAllocation allocation = studentAllocationService.getStudentAllocationById(id);
         return allocation != null ? ResponseEntity.ok(allocation) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/student/allocation")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin')")
     public ResponseEntity<StudentAllocation> createStudentAllocation(@RequestBody StudentAllocation studentAllocation) {
         StudentAllocation createdAllocation = studentAllocationService.createStudentAllocation(studentAllocation);
         return ResponseEntity.ok(createdAllocation);
     }
 
     @PutMapping("/student/allocation/{id}")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin')")
     public ResponseEntity<StudentAllocation> updateStudentAllocation(
             @PathVariable int id, @RequestBody StudentAllocation updatedAllocation) {
         StudentAllocation result = studentAllocationService.updateStudentAllocation(id, updatedAllocation);
@@ -48,6 +53,7 @@ public class StudentAllocationController {
     }
 
     @DeleteMapping("/student/allocation/{id}")
+    @PreAuthorize("hasRole('ROLE_BBDSuperAdmin')")
     public ResponseEntity<Void> deleteStudentAllocation(@PathVariable int id) {
         studentAllocationService.deleteStudentAllocation(id);
         return ResponseEntity.noContent().build();

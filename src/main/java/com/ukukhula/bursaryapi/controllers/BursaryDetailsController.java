@@ -3,20 +3,11 @@ package com.ukukhula.bursaryapi.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ukukhula.bursaryapi.entities.Department;
-// import com.ukukhula.bursaryapi.assemblers.BursaryDetailsModelAssembler;
 import com.ukukhula.bursaryapi.entities.BursaryDetails;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
