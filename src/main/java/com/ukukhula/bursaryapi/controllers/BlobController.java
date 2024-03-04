@@ -44,8 +44,8 @@ public class BlobController {
         }
         try {
             byte[] data = multipartFile.getBytes();
-            String blobName = "file.pdf"; // Use filename as blob name
-            blobStorageService.uploadBlob("studentsdocs", blobName, data, "application/pdf");
+           // String blobName = "file.pdf"; // Use filename as blob name
+            blobStorageService.uploadBlob("studentsdocs", multipartFile.getOriginalFilename(), data, "application/pdf");
 
 
             return ResponseEntity.ok("PDF file uploaded successfully.");
