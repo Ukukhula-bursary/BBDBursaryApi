@@ -38,7 +38,7 @@ public ResponseEntity<?> oAuthlogin(@RequestBody String oauthToken) {
         if (matcher.find()) {
             email = matcher.group();
         }
-        System.out.println(email);
+       
 
         // Call the signin method to get the authentication token and user role
         Map<String, String> signinResult = authenticationService.signin(email);
@@ -46,6 +46,8 @@ public ResponseEntity<?> oAuthlogin(@RequestBody String oauthToken) {
         // Extract the authentication token and user role from the result map
         String authToken = signinResult.get("jwt");
         String userRole = signinResult.get("userRole");
+        String userId = signinResult.get("userId");
+        
 
         // Create a JSON object
         JSONObject jsonResponse = new JSONObject();

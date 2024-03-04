@@ -40,7 +40,7 @@ public class UserRepository {
     public jwtUser createJwtUser(User user,String email){
         int id=getUserIdByEmail(email);
         int role=getUserRoleById(id);
-        return new jwtUser(user.getFirstName(), user.getLastName(), email, user.getContactId(), role, user.isIsActiveUser());
+        return new jwtUser(id,user.getFirstName(), user.getLastName(), email, user.getContactId(), role, user.isIsActiveUser());
     }
 
     public List<User> findAll() {

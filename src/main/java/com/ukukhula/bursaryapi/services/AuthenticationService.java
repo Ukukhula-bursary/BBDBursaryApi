@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {//implements AuthenticationProvider{
-     private final UserRepository userRepository;
+  private final UserRepository userRepository;
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
@@ -41,16 +37,9 @@ public Map<String, String> signin(String email) {
     // Add JWT token and user role to the response map
     response.put("jwt", jwt);
     response.put("userRole", uJwtUser.getRole().toString());
+    response.put("userId", String.valueOf(uJwtUser.getUserID()));
 
     return response;
 }
-    // @Override
-    // public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-    // }
-
-    // @Override
-    // public boolean supports(Class<?> authentication) {
-    //           return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    // }
 }

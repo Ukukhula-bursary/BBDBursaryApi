@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class jwtUser implements UserDetails {
+    private int userID;
     private String firstName;
     private String lastName;
     private String email;
@@ -26,13 +27,15 @@ public class jwtUser implements UserDetails {
     private String password;
     private Role role;
     private boolean IsActiveUser;
-    public jwtUser(String firstName, String lastName, String email, int contactId, int roleId, boolean IsActiveUser) {
+    public jwtUser(int userID,String firstName, String lastName, String email, int contactId, int roleId, boolean IsActiveUser) {
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.contactId = contactId;
         this.roleId = roleId;
         this.IsActiveUser = IsActiveUser;
+
     
         switch (roleId) {
             case 2:

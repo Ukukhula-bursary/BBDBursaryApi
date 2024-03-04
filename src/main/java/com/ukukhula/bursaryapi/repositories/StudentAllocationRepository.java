@@ -10,19 +10,23 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import com.ukukhula.bursaryapi.entities.StudentAllocation;
+import com.ukukhula.bursaryapi.entities.StudentApplication;
+import com.ukukhula.bursaryapi.entities.Dto.StudentAllocationDto;
 import com.ukukhula.bursaryapi.exceptions.StudentAllocationNotFoundException;
+import com.ukukhula.bursaryapi.services.StudentApplicationService;
 
 @Repository
 public class StudentAllocationRepository {
 
   
     private final JdbcTemplate jdbcTemplate;
+    private  StudentApplicationService service;
 
   
-    public StudentAllocationRepository(JdbcTemplate jdbcTemplate) {
+    public StudentAllocationRepository(JdbcTemplate jdbcTemplate, StudentApplicationService service) {
         this.jdbcTemplate = jdbcTemplate;
+        this.service = service;
     }
 
     private final RowMapper<StudentAllocation> studentAllocationRowMapper = ((resultSet, rowNumber) -> {
@@ -42,6 +46,45 @@ public class StudentAllocationRepository {
         return students;
     }
 
+    private StudentAllocationDto mapToStudentAllocationDto(StudentApplication studentApplication) {
+        String applicationId="SELECT UniversityID FROM StudentApplications WHERE StudentID=?";
+        int universityId = jdbcTemplate.queryForObject(applicationId, Integer.class, studentApplication.getStudentID());
+
+
+        String UniversityName="SELECT UniversityName FROM Universities WHERE UniversityID=?";
+        String universityName = jdbcTemplate.queryForObject(UniversityName, String.class, universityId);
+
+        String getApplicationStatus="SELECT Status FROM StudentApplications WHERE StudentID=?";
+        String status = jdbcTemplate.queryForObject(getApplicationStatus, String.class, studentApplication.getStudentID());
+
+        String motivation="SELECT Motivation FROM StudentApplications WHERE StudentID=?";
+        String Motivation = jdbcTemplate.queryForObject(motivation, String.class, studentApplication.getStudentID());
+
+        String date="SELECT Date FROM StudentApplications WHERE StudentID=?";
+        String Date = jdbcTemplate.queryForObject(date, String.class, studentApplication.getStudentID());
+
+        String reviewerId="SELECT Reviewer_UserID FROM StudentApplications WHERE StudentID=?";
+        int reviewer = jdbcTemplate.queryForObject(reviewerId, Integer.class, studentApplication.getStudentID());
+
+        String reviwerName= "SELECT FirstName FROM Users WHERE UserID=?";
+        String ReviewerName = jdbcTemplate.queryForObject(reviwerName, String.class, reviewer);
+
+        String reviewerComment="SELECT ReviewerComment FROM StudentApplications WHERE StudentID=?";
+        String ReviewerComment = jdbcTemplate.queryForObject(reviewerComment, String.class, studentApplication.getStudentID());
+
+
+        return new StudentAllocationDto(
+            studentApplication.getStudentApplicationID(),
+            universityName,
+            studentApplication.getBursaryAmount(),
+            status,
+            Motivation,
+            Date,
+            ReviewerName,
+            ReviewerComment
+        );
+    }
+
     
     public StudentAllocation getStudentAllocationById(int id) {
         String SELECT_STUDENT_ALLOCATION_BY_ID = "SELECT * FROM StudentAllocation WHERE [id] = ?";
@@ -51,6 +94,10 @@ public class StudentAllocationRepository {
         } catch (EmptyResultDataAccessException e) {
             throw new StudentAllocationNotFoundException("StudentAllocation not found for ID: " + id);
         }
+    }
+    public List<StudentAllocationDto> getStudentAllocationAll() {
+        List<StudentApplication> studentAllocations = service.getAllStudentsApplications();
+        return studentAllocations.stream().map(this::mapToStudentAllocationDto).toList();
     }
 
     
