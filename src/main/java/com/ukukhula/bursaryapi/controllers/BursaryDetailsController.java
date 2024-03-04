@@ -44,12 +44,12 @@ public class BursaryDetailsController {
   @GetMapping("/year={year}")
   public ResponseEntity<?> getBursaryDetailsByYear(@PathVariable int year) {
 
-    List<BursaryDetails> allBursaryDetailsForYear = bursaryDetailsService.getBursaryDetailsByYear(year);
+    BursaryDetails bursaryDetailsForYear = bursaryDetailsService.getBursaryDetailsByYear(year);
 
-    if(Objects.isNull(allBursaryDetailsForYear)) {
+    if(Objects.isNull(bursaryDetailsForYear)) {
       return new ResponseEntity<>("Unable to retrieve bursary details for year " + year, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return ResponseEntity.ok(allBursaryDetailsForYear);
+    return ResponseEntity.ok(bursaryDetailsForYear);
   }
 
   @PostMapping("/even_distribute")

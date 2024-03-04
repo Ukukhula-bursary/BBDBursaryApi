@@ -35,10 +35,10 @@ public class BursaryDetailsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<BursaryDetails> getBursaryDetailsByYear(int year) {
+    public BursaryDetails getBursaryDetailsByYear(int year) {
 
         try {
-            return jdbcTemplate.query(
+            return jdbcTemplate.queryForObject(
                     GET_BURSARY_DETAILS_BY_YEAR,
                     bursaryDetailsRowMapper, year);
 

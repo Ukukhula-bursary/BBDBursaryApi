@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.parsing.Location;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,13 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.ukukhula.bursaryapi.entities.User;
 import com.ukukhula.bursaryapi.entities.Request.StudentApplicationRequest;
 import com.ukukhula.bursaryapi.entities.Request.UpdateRoleRequest;
 import com.ukukhula.bursaryapi.entities.Request.UserRequest;
 import com.ukukhula.bursaryapi.services.UserService;
 
-// @CrossOrigin("*")
+@CrossOrigin("*")
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/users")
@@ -67,11 +69,13 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<UserRequest> createUser(@RequestBody UserRequest user) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequest user) {
         int id = userService.save(user);
         if (id != -1) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
-            return ResponseEntity.created(location).build();
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("location", location.toString());
+            return ResponseEntity.ok(jsonObject);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

@@ -1,10 +1,15 @@
 package com.ukukhula.bursaryapi.entities;
 
-public enum Role {
-    ROLE_BBDAdmin_Finance,
-    ROLE_BBDAdmin_Reviewers,
-    ROLE_BBDSuperAdmin,
-    ROLE_HOD,
-    ROLE_Student,
-    ROLE_UniversityAdmin
+import lombok.Data;
+
+@Data
+public class Role {
+    private int roleId;
+    private String role;
+
+
+    public Role(int roleId, String role) {
+        this.roleId = roleId;
+        this.role = role;
+    }
 }

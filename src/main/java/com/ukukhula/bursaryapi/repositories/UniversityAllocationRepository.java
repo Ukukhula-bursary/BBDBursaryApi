@@ -53,6 +53,17 @@ public class UniversityAllocationRepository {
             ",[BursaryDetailsID] " +
         "FROM [dbo].[UniversityAllocation] " +
         "WHERE [UniversityID] = ? ";
+    private static final String GET_ALL_UNIVERSITY_ALLOCATIONS_FOR_UNIVERSITY_YEAR = 
+        "SELECT " +
+            "ua.[UniversityAllocationID] " +
+            ",ua.[UniversityID] " +
+            ",ua.[Amount] " +
+            ",ua.[BursaryDetailsID]" +
+        "FROM [dbo].[UniversityAllocation] ua " +
+            "INNER JOIN [dbo].[BursaryDetails] bd " +
+            "ON ua.[BursaryDetailsID] = bd.[BursaryDetailsID] " +
+        "WHERE bd.[Year] = ? " +
+        "AND ua.[UniversityID] = ?";
     private static final String GET_REMAINING_UNIVERSITY_ALLOCATION = 
         "{? = call [dbo].[udfCalculateRemainingUniversityFundsNotRejectedApplications](?, ?)}";
 
@@ -124,6 +135,28 @@ public class UniversityAllocationRepository {
         }
     }
     
+    public UniversityAllocation getUniversityAllocationsForUniversityYear(int year, String universityName) {
+        try {
+
+            int universityId = new UniversityRepository(jdbcTemplate)
+                    .getUniversityIdByName(universityName)
+                    .getUniversityId();
+
+            return jdbcTemplate.queryForObject(
+                    GET_ALL_UNIVERSITY_ALLOCATIONS_FOR_UNIVERSITY_YEAR,
+                    universityAllocationRowMapper, year, universityId);
+
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("\n\n## COuld not retrieve university allocations for university " + universityName + ", for year: " + year + " ##\n\n");
+            System.out.println(e.getMessage());
+            return null;
+        } catch (Exception e) {
+            System.out.println("\n\n## Unexpected error occurred when retrieving university allocation for university, for year, at repository level ##\n\n");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     public BigDecimal getRemainingAmountInFundForYear(int year, String universityName) {
          
         try {
