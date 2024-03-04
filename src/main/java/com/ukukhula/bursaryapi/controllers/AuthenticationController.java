@@ -54,6 +54,7 @@ public ResponseEntity<?> oAuthlogin(@RequestBody String oauthToken) {
         jsonResponse.put("email", email);
         jsonResponse.put("token", authToken);
         jsonResponse.put("userRole", userRole);
+        jsonResponse.put("userId", userId);
 
         // Return the JSON string as ResponseEntity
         return ResponseEntity.ok(jsonResponse.toString());
