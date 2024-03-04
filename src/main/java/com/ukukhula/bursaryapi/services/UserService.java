@@ -20,6 +20,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public Optional<User> getUserById(int id) {
+        return userRepository.getUserById(id);
+    }
+
     public Optional<User> getUserByEmail(String email) {
         return userRepository.getUserByEmail(email);
     }

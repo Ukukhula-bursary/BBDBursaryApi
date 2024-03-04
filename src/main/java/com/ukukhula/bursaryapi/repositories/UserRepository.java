@@ -28,6 +28,12 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public Optional<User> getUserById(int id) {
+        String GET_USER_BY_ID = "SELECT * FROM [dbo].[Users] WHERE UserID = ?";
+        List<User> users = jdbcTemplate.query(GET_USER_BY_ID, userRowMapper, id);
+        return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
+    }
+
     public Optional<User> getUserByEmail(String email) {
         String GET_USER_BY_EMAIL = "SELECT * FROM [dbo].[Users] LEFT JOIN " +
                 "Contacts" +
